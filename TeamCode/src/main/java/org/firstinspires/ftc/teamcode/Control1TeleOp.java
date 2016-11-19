@@ -32,12 +32,11 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 /**
@@ -53,18 +52,18 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="TeletubbiesV11", group="Linear Opmode")  // @Autonomous(...) is the other common choice
+@TeleOp(name="TeletubbiesV12", group="Linear Opmode")  // @Autonomous(...) is the other common choice
 // @Disabled
-public class Teletubbies extends LinearOpMode {
+public class Control1TeleOp extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
     DcMotor FR, FL, BL, BR, scoop;
-    double x, y, x2;
+    double x, y, x2, speed;
     Servo servoR,servoL;
     double servoPos = 0.5;
     int servoTime = 0;
-    double speed = 1;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
