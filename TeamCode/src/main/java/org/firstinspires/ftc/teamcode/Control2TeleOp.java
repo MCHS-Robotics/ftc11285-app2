@@ -64,7 +64,7 @@ public class Control2TeleOp extends LinearOpMode {
     double servoPos = 0.5;
     int servoTime = 0;
     double speed = 1;
-    boolean
+    boolean lbState = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -95,13 +95,18 @@ public class Control2TeleOp extends LinearOpMode {
             y = -gamepad1.left_stick_y;
 
             /*MOVEMENT*/
-            if(gamepad1.left_bumper) {
+            if(gamepad1.left_bumper && !lbState) {
+                lbState = true;
                 if (speed == 1) {
                     speed = .5;
                 } else {
                     speed = 1;
                 }
             }
+            if(!gamepad1.left_bumper && lbState){
+                lbState = false;
+            }
+
 
             x2 = gamepad1.right_stick_x;
 
@@ -178,10 +183,6 @@ public class Control2TeleOp extends LinearOpMode {
 
             }
 
-            if(gamepad1.right_bumper){
-                scoop.setPower(-.3);
-
-            }
 
             if(gamepad1.right_bumper){
                 scoop.setPower(.3);
