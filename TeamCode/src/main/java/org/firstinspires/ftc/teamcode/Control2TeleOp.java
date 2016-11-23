@@ -64,6 +64,7 @@ public class Control2TeleOp extends LinearOpMode {
     double servoPos = 0.5;
     int servoTime = 0;
     double speed = 1;
+    boolean
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -117,26 +118,29 @@ public class Control2TeleOp extends LinearOpMode {
                 BL.setPower(speed*.5);
             }
 
-            if(gamepad1.dpad_down){//moves robot down if dpad down is pressed
+            else if(gamepad1.dpad_down){//moves robot down if dpad down is pressed
                 FR.setPower(-speed*.5);
                 FL.setPower(-speed*.5);
                 BR.setPower(-speed*.5);
                 BL.setPower(-speed*.5);
             }
 
-            if(gamepad1.dpad_left){//moves robot left if dpad left is pressed
+            else if(gamepad1.dpad_left){//moves robot left if dpad left is pressed
                 FR.setPower(-speed*.5);
                 FL.setPower(speed*.5);
                 BR.setPower(speed*.5);
                 BL.setPower(-speed*.5);
             }
 
-            if(gamepad1.dpad_right){//moves robot right if dpad right is pressed
+            else if(gamepad1.dpad_right){//moves robot right if dpad right is pressed
                 FR.setPower(speed*.5);
                 FL.setPower(-speed*.5);
                 BR.setPower(-speed*.5);
                 BL.setPower(speed*.5);
             }
+
+
+
 
             /*ARMS*/
             if (gamepad2.left_bumper && servoTime <=0) {
