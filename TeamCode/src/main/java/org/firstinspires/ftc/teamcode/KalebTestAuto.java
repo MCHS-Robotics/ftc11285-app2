@@ -32,13 +32,10 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
-import com.google.blocks.ftcrobotcontroller.util.HardwareUtilDeviceTest;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
-import com.qualcomm.robotcore.hardware.HardwareDevice;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -46,7 +43,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="KimmyAutonomous v2", group="Autonomous")
 //@Disabled
-public class KimmyAutonomous extends LinearOpMode {
+public class KalebTestAuto extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     static final double FW_SPEED = 0.5;

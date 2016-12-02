@@ -31,7 +31,7 @@ public class Test_Auto_3 extends LinearOpMode {
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        idle()
+        idle();
 
         waitForStart();
         runtime.reset();
