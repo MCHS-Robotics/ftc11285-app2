@@ -114,12 +114,12 @@ public class KimmyAutonomous extends LinearOpMode {
         forward(571);
         turnLeft(450);
         forward(571);
-      //  turnLeft(600);
-       // forward(571);
-       // turnLeft(600);
-        //forward(571);
-        //turnLeft(600);
-       // forward(571);
+         turnLeft(450);
+        forward(571);
+        turnLeft(450);
+        forward(571);
+        turnLeft(450);
+        forward(571);
         //forward(4568);
         //forward2(12);
         //turnLeft2(360);
