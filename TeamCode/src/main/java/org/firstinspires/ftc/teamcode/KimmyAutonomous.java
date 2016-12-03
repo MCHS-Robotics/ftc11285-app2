@@ -44,7 +44,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
-@Autonomous(name="KimmyAutonomous v1", group="Autonomous")
+@Autonomous(name="KimmyAutonomous v2", group="Autonomous")
 //@Disabled
 public class KimmyAutonomous extends LinearOpMode {
 

@@ -31,11 +31,11 @@ public class Test_Auto_3 extends LinearOpMode {
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        idle()
+        idle();
 
         waitForStart();
         runtime.reset();
-
+        turnRight(90);
         while (opModeIsActive()) {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
