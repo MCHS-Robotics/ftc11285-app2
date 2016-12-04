@@ -106,11 +106,14 @@ public class KimmyAutonomous extends LinearOpMode {
         //moveArmDown();
         //moveArmUp();
 
-        //arm.setPosition(arm.MAX_POSITION - .25);
-        //arm.setPosition(arm.MIN_POSITION);
-        //forward2(2);
-        //forward(1000);
-        //forward2(2);
+        forward(571);
+
+
+        /*arm.setPosition(arm.MAX_POSITION - .25);
+        arm.setPosition(arm.MIN_POSITION);
+        forward2(2);
+        forward(1000);
+        forward2(2);
         forward(571);
         turnLeft(450);
         forward(571);
@@ -120,15 +123,15 @@ public class KimmyAutonomous extends LinearOpMode {
         forward(571);
         turnLeft(450);
         forward(571);
-        //forward(4568);
-        //forward2(12);
-        //turnLeft2(360);
-        //turnLeft2(90);
-        //turnRight2(90);
-        //turnLeft2(90);
-        //turnRight2(90);
-        //turnLeftG(90);
-        //turnRightG(90);
+        forward(4568);
+        forward2(12);
+        turnLeft2(360);
+        turnLeft2(90);
+        turnRight2(90);
+        turnLeft2(90);
+        turnRight2(90);
+        turnLeftG(90);
+        turnRightG(90);*/
 
 
 
@@ -233,6 +236,8 @@ public class KimmyAutonomous extends LinearOpMode {
     }
     public void forward2 (int distance) throws InterruptedException {
         if (opModeIsActive()) {
+            telemetry.addData("status", "forward2");
+            telemetry.update();
             encoderTarget = (distance * multToMove);
             FL.setPower(FW_SPEED);
             FR.setPower(FW_SPEED);
