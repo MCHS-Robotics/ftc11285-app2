@@ -32,12 +32,11 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 /**
@@ -53,9 +52,9 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="TeletubbiesV11", group="Linear Opmode")  // @Autonomous(...) is the other common choice
+@TeleOp(name="Tele1", group="Linear Opmode")  // @Autonomous(...) is the other common choice
 // @Disabled
-public class Teletubbies extends LinearOpMode {
+public class Control2TeleOp extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
@@ -65,6 +64,7 @@ public class Teletubbies extends LinearOpMode {
     double servoPos = 0.5;
     int servoTime = 0;
     double speed = 1;
+    boolean lbState = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -80,7 +80,7 @@ public class Teletubbies extends LinearOpMode {
         servoL = hardwareMap.servo.get("servoL");
 
         servoR.setPosition(Servo.MIN_POSITION);
-        servoL.setPosition(Servo.MAX_POSITION-.25);
+        servoL.setPosition(Servo.MIN_POSITION);
 
         //FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
@@ -95,43 +95,76 @@ public class Teletubbies extends LinearOpMode {
             y = -gamepad1.left_stick_y;
 
             /*MOVEMENT*/
-            if(gamepad1.b){
-                if(speed == 1){
+            if(gamepad1.left_bumper && !lbState) {
+                lbState = true;
+                if (speed == 1) {
                     speed = .5;
-                }
-                else{
+                } else {
                     speed = 1;
                 }
             }
-
-            if(gamepad1.dpad_up && speed < 1){
-                speed += .001;
+            if(!gamepad1.left_bumper && lbState){
+                lbState = false;
             }
 
-            if(gamepad1.dpad_down && speed > 0){
-                speed -= .001;
-            }
 
             x2 = gamepad1.right_stick_x;
 
-            FR.setPower((y-x)*.5 * speed - x2/2 * speed);
-            BL.setPower((y-x)*.5 * speed + x2/2 * speed);
-            FL.setPower((y+x)*.5 * speed + x2/2 * speed);
-            BR.setPower((y+x)*.5 * speed - x2/2 * speed);
+            FR.setPower(((y-x)*.5 - x2/2)* speed);
+            BL.setPower(((y-x)*.5 + x2/2)* speed);
+            FL.setPower(((y+x)*.5 + x2/2)* speed);
+            BR.setPower(((y+x)*.5 - x2/2)* speed);
 
-            //Speed up and Slow Down changed to left and right triggers
-            //This would give the driver --> the thumb controls for convenience
-            //Beacon hitters and scoop moved to gamepad2
+
+            if(gamepad1.dpad_up){//moves robot up if dpad up is pressed
+                FR.setPower(speed*.5);
+                FL.setPower(speed*.5);
+                BR.setPower(speed*.5);
+                BL.setPower(speed*.5);
+            }
+
+            else if(gamepad1.dpad_down){//moves robot down if dpad down is pressed
+                FR.setPower(-speed*.5);
+                FL.setPower(-speed*.5);
+                BR.setPower(-speed*.5);
+                BL.setPower(-speed*.5);
+            }
+
+            else if(gamepad1.dpad_left){//moves robot left if dpad left is pressed
+                FR.setPower(-speed*.5);
+                FL.setPower(speed*.5);
+                BR.setPower(speed*.5);
+                BL.setPower(-speed*.5);
+            }
+
+            else if(gamepad1.dpad_right){//moves robot right if dpad right is pressed
+                FR.setPower(speed*.5);
+                FL.setPower(-speed*.5);
+                BR.setPower(-speed*.5);
+                BL.setPower(speed*.5);
+            }
+
+
 
 
             /*ARMS*/
-            if (gamepad1.left_bumper && servoTime <=0) {
+            if (gamepad2.left_bumper && servoTime <=0) {
                 servoTime = 2000;
                Switch(servoL);
             }
 
-            if (gamepad1.right_bumper && servoTime <=0) {
+            if (gamepad2.right_bumper && servoTime <=0) {
                Switch(servoR);
+                servoTime = 2000;
+            }
+
+            if (gamepad1.left_trigger > .1 && servoTime <=0) {
+                servoTime = 2000;
+                Switch(servoL);
+            }
+
+            if (gamepad1.right_trigger > .1 && servoTime <=0) {
+                Switch(servoR);
                 servoTime = 2000;
             }
 
@@ -140,17 +173,28 @@ public class Teletubbies extends LinearOpMode {
             }
 
             /*SCOOP*/
-            if(gamepad1.left_trigger > .3){
+            if(gamepad2.left_trigger > .3){
                 scoop.setPower(.3);
 
             }
 
-            if(gamepad1.right_trigger > .3){
+            if(gamepad2.right_trigger > .3){
                 scoop.setPower(-.3);
 
             }
 
-            if(gamepad1.right_trigger == 0 && gamepad1.left_trigger == 0){
+
+            if(gamepad1.right_bumper){
+                scoop.setPower(.3);
+
+            }
+
+            if(gamepad1.y){
+                scoop.setPower(-.3);
+
+            }
+
+            if(gamepad2.right_trigger == 0 && gamepad1.left_trigger == 0 && !gamepad1.right_bumper && !gamepad1.y){
                 scoop.setPower(0);
 
             }

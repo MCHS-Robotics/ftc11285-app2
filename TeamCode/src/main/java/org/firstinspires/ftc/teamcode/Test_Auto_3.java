@@ -35,7 +35,7 @@ public class Test_Auto_3 extends LinearOpMode {
 
         waitForStart();
         runtime.reset();
-
+        turnRight(90);
         while (opModeIsActive()) {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
