@@ -32,26 +32,23 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
-import com.google.blocks.ftcrobotcontroller.util.HardwareUtilDeviceTest;
-import com.qualcomm.hardware.adafruit.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.GyroSensor;
-import com.qualcomm.robotcore.hardware.HardwareDevice;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
+import com.qualcomm.robotcore.hardware.DigitalChannelController;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
-@Autonomous(name="KimmyAutonomous v2", group="Autonomous")
+@Autonomous(name="KimmyAutonomous v2 with color sensor", group="Autonomous")
 //@Disabled
-public class KimmyAutonomous extends LinearOpMode {
+public class KimmyAutonomousV2 extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     static final double FW_SPEED = 0.5;
@@ -68,6 +65,10 @@ public class KimmyAutonomous extends LinearOpMode {
     // static final double moveFix = 2;
     static Velocity velocity = new Velocity();
     static AngularVelocity aVelocity = new AngularVelocity();
+   static ColorSensor sensorRGB;
+    static DeviceInterfaceModule cdim;
+
+    static final int LED_CHANNEL = 5;
 
     //  static final double multToMove =  stepValue * rad2 *moveFix/circumferenceW;
 // degrees/360 * circ * 7.878 =
@@ -92,6 +93,11 @@ public class KimmyAutonomous extends LinearOpMode {
         FL.setDirection(DcMotor.Direction.REVERSE);
        // arm.setPosition(arm.MIN_POSITION + .01);
 
+        cdim = hardwareMap.deviceInterfaceModule.get("dim");
+        cdim.setDigitalChannelMode(LED_CHANNEL, DigitalChannelController.Mode.OUTPUT);
+        sensorRGB = hardwareMap.colorSensor.get("sensor_color");
+        cdim.setDigitalChannelState(LED_CHANNEL, false);
+
         idle();
 
         telemetry.addData("Status", "Initializing");
@@ -102,39 +108,8 @@ public class KimmyAutonomous extends LinearOpMode {
 
         telemetry.addData("Status", "Running");
         telemetry.update();
-        //moveArmUp();
-        //moveArmDown();
-        //moveArmUp();
 
-        //forward(571);
-        forward2(12);
-
-
-        /*arm.setPosition(arm.MAX_POSITION - .25);
-        arm.setPosition(arm.MIN_POSITION);
-        forward2(2);
-        forward(1000);
-        forward2(2);
         forward(571);
-        turnLeft(450);
-        forward(571);
-         turnLeft(450);
-        forward(571);
-        turnLeft(450);
-        forward(571);
-        turnLeft(450);
-        forward(571);
-        forward(4568);
-        forward2(12);
-        turnLeft2(360);
-        turnLeft2(90);
-        turnRight2(90);
-        turnLeft2(90);
-        turnRight2(90);
-        turnLeftG(90);
-        turnRightG(90);*/
-
-
 
 
         telemetry.addData("Status", "Complete");
@@ -340,4 +315,18 @@ public class KimmyAutonomous extends LinearOpMode {
            // aVelocity = gyro.getAngularVelocity();
         }
     }
+
+    public boolean isRed(){
+        cdim.setDigitalChannelState(LED_CHANNEL, true);
+        try {
+            Thread.sleep(100);
+        }catch(Exception e){
+
+
+        }
+         boolean isR = sensorRGB.red()>sensorRGB.blue();
+        cdim.setDigitalChannelState(LED_CHANNEL, false);
+        return isR;
+    }
+
     }
