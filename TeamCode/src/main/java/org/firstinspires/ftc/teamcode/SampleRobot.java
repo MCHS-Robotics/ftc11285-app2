@@ -18,8 +18,8 @@ public class SampleRobot {
     public SampleRobot() {
     }
 
-    public void init(HardwareMap hwMap) {
-        hwMap = this.hwMap;
+    public void init(HardwareMap rhwMap) {
+        hwMap = rhwMap;
 
         FL = hwMap.dcMotor.get("fl");
         BL = hwMap.dcMotor.get("bl");
