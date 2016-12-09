@@ -119,6 +119,11 @@ public class Teletubbies extends LinearOpMode {
             FL.setPower((y+x)*.5 * speed + x2/2 * speed);
             BR.setPower((y+x)*.5 * speed - x2/2 * speed);
 
+            //Speed up and Slow Down changed to left and right triggers
+            //This would give the driver --> the thumb controls for convenience
+            //Beacon hitters and scoop moved to gamepad2
+
+
             /*ARMS*/
             if (gamepad1.left_bumper && servoTime <=0) {
                 servoTime = 2000;
