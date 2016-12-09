@@ -104,6 +104,8 @@ public class CloseBallFarBeacon extends LinearOpMode {
         //forward2(12);
         forward(1428);
         turnRight(225);
+        forward(571);
+        turnRight(451);
 
 
         /*arm.setPosition(arm.MAX_POSITION - .25);

@@ -49,7 +49,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
-@Autonomous(name="KimmyAutonomous v2", group="Autonomous")
+@Autonomous(name="KimmyAutonomous v3", group="Autonomous")
 //@Disabled
 public class KimmyAutonomous extends LinearOpMode {
 

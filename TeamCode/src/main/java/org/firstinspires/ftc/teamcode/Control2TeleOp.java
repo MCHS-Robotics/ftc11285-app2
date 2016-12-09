@@ -59,7 +59,7 @@ public class Control2TeleOp extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
-    DcMotor FR, FL, BL, BR, scoop;
+    DcMotor FR, FL, BL, BR, scoop,launcher;
     double x, y, x2;
     Servo servoR,servoL;
     double servoPos = 0.5;
@@ -79,6 +79,7 @@ public class Control2TeleOp extends LinearOpMode {
         scoop = hardwareMap.dcMotor.get("scoop");
         servoR = hardwareMap.servo.get("servoR");
         servoL = hardwareMap.servo.get("servoL");
+        launcher = hardwareMap.dcMotor.get("launch");
 
         servoR.setPosition(Servo.MIN_POSITION);
         servoL.setPosition(Servo.MIN_POSITION);
@@ -198,6 +199,22 @@ public class Control2TeleOp extends LinearOpMode {
             if(gamepad2.right_trigger == 0 && gamepad1.left_trigger == 0 && !gamepad1.right_bumper && !gamepad1.y){
                 scoop.setPower(0);
 
+            }
+
+            /*Launcher*/
+
+            if(gamepad2.a){
+                double time = runtime.seconds() + 5;
+                launcher.setPower(.25);
+                while(runtime.seconds() < time){
+
+                }
+                time = runtime.seconds() + 5;
+                launcher.setPower(-.25);
+                while(runtime.seconds() < time){
+
+                }
+                launcher.setPower(0);
             }
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }

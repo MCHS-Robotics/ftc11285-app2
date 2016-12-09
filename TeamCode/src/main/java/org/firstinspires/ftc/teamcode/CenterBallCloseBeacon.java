@@ -102,8 +102,8 @@ public class CenterBallCloseBeacon extends LinearOpMode {
 
         //forward(571);
         //forward2(12);
-        forward(1428);
-        turnRight(450);
+        //forward(1428);
+        //turnRight(450);
         forward(571);
 
 

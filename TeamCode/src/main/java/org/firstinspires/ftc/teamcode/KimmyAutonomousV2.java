@@ -32,12 +32,16 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
+import android.content.Context;
+
+import com.qualcomm.ftccommon.SoundPlayer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.DigitalChannelController;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
@@ -46,12 +50,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
-@Autonomous(name="KimmyAutonomous v2 with color sensor", group="Autonomous")
 //@Disabled
-public class KimmyAutonomousV2 extends LinearOpMode {
+public abstract class KimmyAutonomousV2 extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
-    static final double FW_SPEED = 0.5;
+    static final double FW_SPEED = 0.25;
     static final double BW_SPEED = -0.5;
     static final double TL_SPEED = 0.2;
     static final double TR_SPEED = 0.2;
@@ -67,6 +70,7 @@ public class KimmyAutonomousV2 extends LinearOpMode {
     static AngularVelocity aVelocity = new AngularVelocity();
    static ColorSensor sensorRGB;
     static DeviceInterfaceModule cdim;
+    //static SoundPlayer soundPlayer = new SoundPlayer(1,1);
 
     static final int LED_CHANNEL = 5;
 
@@ -77,6 +81,7 @@ public class KimmyAutonomousV2 extends LinearOpMode {
     // BNO055IMU gyro;
 
     DcMotor FL, FR, BL, BR;
+    Servo servoR,servoL;
     //Servo arm;
 
     @Override
@@ -86,6 +91,10 @@ public class KimmyAutonomousV2 extends LinearOpMode {
         FR = hardwareMap.dcMotor.get("fr");
         BL = hardwareMap.dcMotor.get("bl");
         BR = hardwareMap.dcMotor.get("br");
+        servoR = hardwareMap.servo.get("servoR");
+        servoL = hardwareMap.servo.get("servoL");
+        servoR.setPosition(Servo.MIN_POSITION);
+        servoL.setPosition(Servo.MIN_POSITION);
 //        arm = hardwareMap.servo.get("servoRB");
 
         //FL.setDirection(DcMotor.Direction.REVERSE);
@@ -109,7 +118,7 @@ public class KimmyAutonomousV2 extends LinearOpMode {
         telemetry.addData("Status", "Running");
         telemetry.update();
 
-        forward(571);
+        running();
 
 
         telemetry.addData("Status", "Complete");
@@ -135,6 +144,7 @@ public class KimmyAutonomousV2 extends LinearOpMode {
 
     public void forward(int milliseconds) throws InterruptedException {
         if (opModeIsActive()) {
+            //milliseconds = (int)Math.round(milliseconds * (571.0/19));
             telemetry.addData("status", "forward");
             telemetry.update();
             FL.setPower(FW_SPEED);
@@ -317,16 +327,59 @@ public class KimmyAutonomousV2 extends LinearOpMode {
     }
 
     public boolean isRed(){
+        //soundPlayer.play(hardwareMap.appContext,0);
         cdim.setDigitalChannelState(LED_CHANNEL, true);
         try {
             Thread.sleep(100);
         }catch(Exception e){
-
 
         }
          boolean isR = sensorRGB.red()>sensorRGB.blue();
         cdim.setDigitalChannelState(LED_CHANNEL, false);
         return isR;
     }
+
+    public static void Switch(Servo servo) {
+        if (servo.getPosition() == servo.MIN_POSITION) {
+            servo.setPosition(Servo.MAX_POSITION-.25);
+        }else if (servo.getPosition() == Servo.MAX_POSITION-.25){
+            servo.setPosition(Servo.MIN_POSITION);
+        }
+    }
+
+    public void hitRed(){
+        if(isRed()){
+            Switch(servoR);
+            //forward
+            try {
+                Thread.sleep(100);
+            }catch (Exception e){}
+            Switch(servoR);
+        }else {
+            Switch(servoL);
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) {}
+            Switch(servoL);
+        }
+    }
+
+    public void hitBlue(){
+        if(isRed()){
+            Switch(servoL);
+            try {
+                Thread.sleep(100);
+            }catch (Exception e){}
+            Switch(servoL);
+        }else {
+            Switch(servoR);
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) {}
+            Switch(servoR);
+        }
+    }
+
+    public abstract void running() throws InterruptedException;
 
     }
