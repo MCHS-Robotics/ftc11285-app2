@@ -65,7 +65,7 @@ public class KimmyAutonomousV2 extends LinearOpMode {
     // static final double moveFix = 2;
     static Velocity velocity = new Velocity();
     static AngularVelocity aVelocity = new AngularVelocity();
-   static ColorSensor sensorRGB;
+    static ColorSensor sensorRGB;
     static DeviceInterfaceModule cdim;
 
     static final int LED_CHANNEL = 5;
@@ -77,7 +77,6 @@ public class KimmyAutonomousV2 extends LinearOpMode {
     // BNO055IMU gyro;
 
     DcMotor FL, FR, BL, BR;
-    //Servo arm;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -111,27 +110,27 @@ public class KimmyAutonomousV2 extends LinearOpMode {
 
         forward(571);
 
+        if (isRed()) {
+            forward(4);
+            turnLeft(150);
+        }
+        else {
+            
+        }
 
         telemetry.addData("Status", "Complete");
         telemetry.update();
     }
 
-  //  public void moveArmUp(){
-//
-    ///        arm.setPosition(arm.MAX_POSITION - .25);
-  //      try{this.sleep(1000);}catch(Exception e){}
-//
-//
-  //  }
-//
-  //  public void moveArmDown(){
-//
-    //        arm.setPosition(arm.MIN_POSITION + .01);
-  //      try{this.sleep(1000);}catch(Exception e){}
-//
-   // }
+ /*   public void moveArmUp() {
+        arm.setPosition(arm.MAX_POSITION - .25);
+        try{this.sleep(1000);}catch(Exception e){}
+    }
 
-
+    public void moveArmDown() {
+        arm.setPosition(arm.MIN_POSITION + .01);
+        try{this.sleep(1000);}catch(Exception e){}
+    } */
 
     public void forward(int milliseconds) throws InterruptedException {
         if (opModeIsActive()) {
@@ -324,9 +323,9 @@ public class KimmyAutonomousV2 extends LinearOpMode {
 
 
         }
-         boolean isR = sensorRGB.red()>sensorRGB.blue();
+         boolean isR = sensorRGB.red() > sensorRGB.blue();
         cdim.setDigitalChannelState(LED_CHANNEL, false);
         return isR;
     }
 
-    }
+}
