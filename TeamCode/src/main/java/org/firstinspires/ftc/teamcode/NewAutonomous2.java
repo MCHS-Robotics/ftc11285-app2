@@ -33,9 +33,10 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-//import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+
+//import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 //import com.qualcomm.robotcore.hardware.GyroSensor;
 //import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -44,13 +45,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * Spins each motor starting with the FL and going clockwise.
  */
 
-@Autonomous(name = "Motor Test", group = "Autonomous")
+@Autonomous(name = "New Autonomous(Red)", group = "Autonomous")
 //@Disabled
-public class TestAutonomous extends LinearOpMode {
+public class NewAutonomous2 extends LinearOpMode {
 
     //private ElapsedTime runtime = new ElapsedTime();
 
-    static final double TEST_SPEED = 0.5;
+    static final double TEST_SPEED = 0.4;
 
     DcMotor FL, FR, BL, BR;
 
@@ -61,6 +62,10 @@ public class TestAutonomous extends LinearOpMode {
         FR = hardwareMap.dcMotor.get("fr");
         BL = hardwareMap.dcMotor.get("bl");
         BR = hardwareMap.dcMotor.get("br");
+        FL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         /**
          * Reverse FL and BL if using all ANDYMARK motors
@@ -81,9 +86,13 @@ public class TestAutonomous extends LinearOpMode {
         telemetry.addData("Status", "Running");
         telemetry.update();
 
-        moveForward(1000);
-        turnRight(750);
-        moveForward(2000);
+        moveBackward(900);
+        turnLeft(200);
+        moveBackward(700);
+        moveForward(200);
+        turnLeft(160);
+        moveBackward(1000);
+        //hitRed();
 
         telemetry.addData("Status", "Complete");
         telemetry.update();
@@ -117,6 +126,7 @@ public class TestAutonomous extends LinearOpMode {
             FR.setPower(0);
             BL.setPower(0);
             BR.setPower(0);
+            sleep(500);
         }
     }
 
@@ -131,6 +141,7 @@ public class TestAutonomous extends LinearOpMode {
             FR.setPower(0);
             BL.setPower(0);
             BR.setPower(0);
+            sleep(500);
         }
     }
 
@@ -145,6 +156,7 @@ public class TestAutonomous extends LinearOpMode {
             FR.setPower(0);
             BL.setPower(0);
             BR.setPower(0);
+            sleep(500);
         }
     }
 
@@ -161,4 +173,38 @@ public class TestAutonomous extends LinearOpMode {
             BR.setPower(0);
         }
     }
+
+    /*public void hitRed(){
+        if(isRed()){
+            //forward
+            try {
+                turnLeft(50);
+                Thread.sleep(100);
+            }catch (Exception e){}
+        }else {
+            try {
+
+                turnRight(50);
+                Thread.sleep(100);
+            } catch (Exception e) {}
+        }
+    }
+
+    public void hitBlue(){
+        if(isRed()){
+
+            try {
+
+                turnRight(50);
+                Thread.sleep(100);
+            }catch (Exception e){}
+        }else {
+
+            try {
+                turnLeft(50);
+                Thread.sleep(100);
+            } catch (Exception e) {}
+
+        }
+    }*/
 }

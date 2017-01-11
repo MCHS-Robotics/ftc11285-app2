@@ -59,7 +59,7 @@ public class Teletubbies extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
-    DcMotor FR, FL, BL, BR, scoop;
+    DcMotor FR, FL, BL, BR;//, ballWheel, launcher;
     double x, y, x2;
     Servo servoR,servoL;
     double servoPos = 0.5;
@@ -75,7 +75,8 @@ public class Teletubbies extends LinearOpMode {
         FL = hardwareMap.dcMotor.get("fl");
         BL = hardwareMap.dcMotor.get("bl");
         BR = hardwareMap.dcMotor.get("br");
-        scoop = hardwareMap.dcMotor.get("scoop");
+        // ballWheel = hardwareMap.dcMotor.get("ballWheel");
+        // launcher = hardwareMap.dcMotor.get("launcher");
         servoR = hardwareMap.servo.get("servoR");
         servoL = hardwareMap.servo.get("servoL");
 
@@ -85,6 +86,7 @@ public class Teletubbies extends LinearOpMode {
         //FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
         FL.setDirection(DcMotor.Direction.REVERSE);
+        //ballWheel.setDirection(DcMotor.Direction.REVERSE);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
@@ -139,20 +141,8 @@ public class Teletubbies extends LinearOpMode {
                 servoTime--;
             }
 
-            /*SCOOP*/
-            if(gamepad1.left_trigger > .3){
-                scoop.setPower(.3);
-
-            }
-
-            if(gamepad1.right_trigger > .3){
-                scoop.setPower(-.3);
-
-            }
-
-            if(gamepad1.right_trigger == 0 && gamepad1.left_trigger == 0){
-                scoop.setPower(0);
-
+            if (gamepad1.x){
+                //ballWheel.setPower(1.0);
             }
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }

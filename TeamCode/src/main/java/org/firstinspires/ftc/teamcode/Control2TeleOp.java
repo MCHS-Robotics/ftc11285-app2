@@ -32,6 +32,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.adafruit.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -58,29 +59,32 @@ public class Control2TeleOp extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
-    DcMotor FR, FL, BL, BR, scoop;
+    DcMotor FR, FL, BL, BR, scoop,launcher;
     double x, y, x2;
-    Servo servoR,servoL;
+   //Servo servoR,servoL;
     double servoPos = 0.5;
     int servoTime = 0;
-    double speed = 1;
+    double speed = .5;
     boolean lbState = false;
+    boolean polar = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-
+        /*Initialize motors*/
         FR = hardwareMap.dcMotor.get("fr");
         FL = hardwareMap.dcMotor.get("fl");
         BL = hardwareMap.dcMotor.get("bl");
         BR = hardwareMap.dcMotor.get("br");
         scoop = hardwareMap.dcMotor.get("scoop");
-        servoR = hardwareMap.servo.get("servoR");
-        servoL = hardwareMap.servo.get("servoL");
+        //servoR = hardwareMap.servo.get("servoR");
+        //servoL = hardwareMap.servo.get("servoL");
+       // launcher = hardwareMap.dcMotor.get("launch");
 
-        servoR.setPosition(Servo.MIN_POSITION);
-        servoL.setPosition(Servo.MIN_POSITION);
+        /*Do pregame setup*/
+        //servoR.setPosition(Servo.MIN_POSITION);
+        //servoL.setPosition(Servo.MIN_POSITION);
 
         //FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
@@ -91,16 +95,22 @@ public class Control2TeleOp extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+
+            //Sets doubles x and y to controller 1's left stick x and y values
             x = gamepad1.left_stick_x;
             y = -gamepad1.left_stick_y;
+            //Sets double x2 to the x value of controller
+            x2 = gamepad1.right_stick_x;
 
             /*MOVEMENT*/
+
+            //Changes the movement speed of the robot when left bumper of gamepad 1 is pressed
             if(gamepad1.left_bumper && !lbState) {
                 lbState = true;
-                if (speed == 1) {
-                    speed = .5;
+                if (speed == .5) {
+                    speed = .25;
                 } else {
-                    speed = 1;
+                    speed = .5;
                 }
             }
             if(!gamepad1.left_bumper && lbState){
@@ -108,106 +118,161 @@ public class Control2TeleOp extends LinearOpMode {
             }
 
 
-            x2 = gamepad1.right_stick_x;
 
-            FR.setPower(((y-x)*.5 - x2/2)* speed);
-            BL.setPower(((y-x)*.5 + x2/2)* speed);
-            FL.setPower(((y+x)*.5 + x2/2)* speed);
-            BR.setPower(((y+x)*.5 - x2/2)* speed);
+//moves robot based on the left joystick of gamepad 1
+if(!polar) {
+    FR.setPower(((y - x) * .5 - x2 / 2) * speed);
+    BL.setPower(((y - x) * .5 + x2 / 2) * speed);
+    FL.setPower(((y + x) * .5 + x2 / 2) * speed);
+    BR.setPower(((y + x) * .5 - x2 / 2) * speed);
+}
+
+            if(gamepad2.a)polar = true;
+            if(gamepad2.b)polar = false;
+
+ if(polar) {
+     if (gamepad1.dpad_up) {//moves robot up if dpad up is pressed
+         FR.setPower(speed * .6 - x2 / 4);
+         FL.setPower(speed * .6 + x2 / 4);
+         BR.setPower(speed * .6 - x2 / 4);
+         BL.setPower(speed * .6 + x2 / 4);
+     } else if (gamepad1.dpad_down) {//moves robot down if dpad down is pressed
+         FR.setPower(-speed * .6 - x2 / 4);
+         FL.setPower(-speed * .6 + x2 / 4);
+         BR.setPower(-speed * .6 - x2 / 4);
+         BL.setPower(-speed * .6 + x2 / 4);
+     } else if (gamepad1.dpad_right) {//moves robot left if dpad left is pressed
+         FR.setPower(-speed * .6 - x2 / 4);
+         FL.setPower(speed * .6 + x2 / 4);
+         BR.setPower(speed * .6 - x2 / 4);
+         BL.setPower(-speed * .6 + x2 / 4);
+     } else if (gamepad1.dpad_left) {//moves robot right if dpad right is pressed
+         FR.setPower(speed * .6 - x2 / 4);
+         FL.setPower(-speed * .6 + x2 / 4);
+         BR.setPower(-speed * .6 - x2 / 4);
+         BL.setPower(speed * .6 + x2 / 4);
+     }else{
+
+         FR.setPower(0 - x2 / 4);
+         FL.setPower(0 + x2 / 4);
+         BR.setPower(0 - x2 / 4);
+         BL.setPower(0 + x2 / 4);
+     }
+
+ }
 
 
-            if(gamepad1.dpad_up){//moves robot up if dpad up is pressed
-                FR.setPower(speed*.5);
-                FL.setPower(speed*.5);
-                BR.setPower(speed*.5);
-                BL.setPower(speed*.5);
-            }
-
-            else if(gamepad1.dpad_down){//moves robot down if dpad down is pressed
-                FR.setPower(-speed*.5);
-                FL.setPower(-speed*.5);
-                BR.setPower(-speed*.5);
-                BL.setPower(-speed*.5);
-            }
-
-            else if(gamepad1.dpad_left){//moves robot left if dpad left is pressed
-                FR.setPower(-speed*.5);
-                FL.setPower(speed*.5);
-                BR.setPower(speed*.5);
-                BL.setPower(-speed*.5);
-            }
-
-            else if(gamepad1.dpad_right){//moves robot right if dpad right is pressed
-                FR.setPower(speed*.5);
-                FL.setPower(-speed*.5);
-                BR.setPower(-speed*.5);
-                BL.setPower(speed*.5);
-            }
-
-
-
-
-            /*ARMS*/
+            /*ARMS*//*
             if (gamepad2.left_bumper && servoTime <=0) {
                 servoTime = 2000;
-               Switch(servoL);
+               SwitchSpecial(servoL,0,.2);
             }
 
             if (gamepad2.right_bumper && servoTime <=0) {
-               Switch(servoR);
+               SwitchSpecial(servoR,0,.16);
                 servoTime = 2000;
             }
 
             if (gamepad1.left_trigger > .1 && servoTime <=0) {
                 servoTime = 2000;
-                Switch(servoL);
+                SwitchSpecial(servoL,0,.2);
             }
 
             if (gamepad1.right_trigger > .1 && servoTime <=0) {
-                Switch(servoR);
+                SwitchSpecial(servoR,0,.16);
                 servoTime = 2000;
             }
 
             if(servoTime > 0) {
                 servoTime--;
             }
-
+*/
             /*SCOOP*/
             if(gamepad2.left_trigger > .3){
-                scoop.setPower(.3);
+                scoop.setPower(.7);
 
             }
 
             if(gamepad2.right_trigger > .3){
-                scoop.setPower(-.3);
+                scoop.setPower(-.7);
 
             }
 
 
             if(gamepad1.right_bumper){
-                scoop.setPower(.3);
+                scoop.setPower(-1);
 
             }
 
             if(gamepad1.y){
-                scoop.setPower(-.3);
+                scoop.setPower(.4);
 
             }
 
-            if(gamepad2.right_trigger == 0 && gamepad1.left_trigger == 0 && !gamepad1.right_bumper && !gamepad1.y){
+            if(gamepad2.right_trigger <= .3 && gamepad1.left_trigger <= .3 && !gamepad1.right_bumper && !gamepad1.y){
                 scoop.setPower(0);
 
             }
+
+            /*Launcher*/
+/*
+            if(gamepad2.a){
+                double time = runtime.seconds() + 5;
+                launcher.setPower(.25);
+                while(runtime.seconds() < time){
+
+                }
+                time = runtime.seconds() + 5;
+                launcher.setPower(-.25);
+                while(runtime.seconds() < time){
+
+                }
+                launcher.setPower(0);
+            }*/
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }
     }
 
+
+    //Don't use use Switch or SwitchSpecial instead
+    /*
     public static void Switch(Servo servo) {
         if (servo.getPosition() == servo.MIN_POSITION) {
-            servo.setPosition(Servo.MAX_POSITION-.25);
-        }else if (servo.getPosition() == Servo.MAX_POSITION-.25){
+            servo.setPosition(Servo.MAX_POSITION-.2);
+        }else if (servo.getPosition() == Servo.MAX_POSITION-.2){
             servo.setPosition(Servo.MIN_POSITION);
         }
+    }
+
+    //Don't use use Switch or SwitchSpecial instead
+    public static void SwitchR(Servo servo) {
+        if (servo.getPosition() == servo.MIN_POSITION) {
+            servo.setPosition(Servo.MAX_POSITION-.18);
+        }else if (servo.getPosition() == Servo.MAX_POSITION-.18){
+            servo.setPosition(Servo.MIN_POSITION);
+        }
+    }
+
+    //Switches servo between position min and max
+        public static void Switch(Servo servo,double min,double max){
+            if (servo.getPosition() == min) {
+                servo.setPosition(max);
+            }else if (servo.getPosition() == max){
+                servo.setPosition(max);
+            }
+        }
+
+    //Switches servo between the servos maximum position - max and the servos minimum position - min
+        public static void SwitchSpecial(Servo servo,double min,double max){
+            if (servo.getPosition() <= servo.MIN_POSITION+min) {
+                servo.setPosition(Servo.MAX_POSITION-max);
+            }else if (servo.getPosition() >= Servo.MAX_POSITION-max){
+                servo.setPosition(Servo.MIN_POSITION+min);
+            }
+
+        }*/
+
+
     }
 
     //@Override
@@ -217,4 +282,3 @@ public class Control2TeleOp extends LinearOpMode {
     //    BL.setPower(0);
     //    BR.setPower(0);
    // }
-}

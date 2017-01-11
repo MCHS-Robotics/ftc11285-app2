@@ -49,7 +49,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
-@Autonomous(name="KimmyAutonomous v2", group="Autonomous")
+@Autonomous(name="KimmyAutonomous v3", group="Autonomous")
 //@Disabled
 public class KimmyAutonomous extends LinearOpMode {
 
@@ -109,7 +109,6 @@ public class KimmyAutonomous extends LinearOpMode {
         //forward(571);
         forward2(12);
 
-
         /*arm.setPosition(arm.MAX_POSITION - .25);
         arm.setPosition(arm.MIN_POSITION);
         forward2(2);
@@ -118,7 +117,7 @@ public class KimmyAutonomous extends LinearOpMode {
         forward(571);
         turnLeft(450);
         forward(571);
-         turnLeft(450);
+        turnLeft(450);
         forward(571);
         turnLeft(450);
         forward(571);
@@ -239,7 +238,7 @@ public class KimmyAutonomous extends LinearOpMode {
         if (opModeIsActive()) {
             telemetry.addData("status", "forward2");
             telemetry.update();
-            encoderTarget = (distance * multToMove);
+            encoderTarget = (distance * multToMove/1000);
             FL.setPower(FW_SPEED);
             FR.setPower(FW_SPEED);
             BL.setPower(FW_SPEED);
