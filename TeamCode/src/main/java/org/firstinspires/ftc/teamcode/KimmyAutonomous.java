@@ -238,7 +238,7 @@ public class KimmyAutonomous extends LinearOpMode {
         if (opModeIsActive()) {
             telemetry.addData("status", "forward2");
             telemetry.update();
-            encoderTarget = (distance * multToMove);
+            encoderTarget = (distance * multToMove/1000);
             FL.setPower(FW_SPEED);
             FR.setPower(FW_SPEED);
             BL.setPower(FW_SPEED);

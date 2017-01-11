@@ -41,7 +41,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.DigitalChannelController;
-import com.qualcomm.robotcore.hardware.Servo;
+//import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
@@ -51,10 +51,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 
 //@Disabled
-public abstract class KimmyAutonomousV2 extends LinearOpMode {
+@Autonomous(name="KimmyAutonomousV2", group="Kaleb Autonomous")
+public class KimmyAutonomousV2 extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
-    static final double FW_SPEED = 0.25;
+    static final double FW_SPEED = 0.05;
     static final double BW_SPEED = -0.5;
     static final double TL_SPEED = 0.2;
     static final double TR_SPEED = 0.2;
@@ -63,7 +64,7 @@ public abstract class KimmyAutonomousV2 extends LinearOpMode {
     static final double diameterRobot = 20.8;
     //static final double degrees = circumferenceW * 360 / Math.PI / diameterRobot;
     static final double rad2 = Math.sqrt(2);
-    static final double multToMove = stepValue / (4 * Math.PI * rad2);
+    static final double multToMove = stepValue / (2 * Math.PI * rad2);
     static final double degrees = Math.PI * diameterRobot * multToMove * rad2 / 360;
     // static final double moveFix = 2;
     static Velocity velocity = new Velocity();
@@ -81,7 +82,7 @@ public abstract class KimmyAutonomousV2 extends LinearOpMode {
     // BNO055IMU gyro;
 
     DcMotor FL, FR, BL, BR;
-    Servo servoR,servoL;
+   // Servo servoR,servoL;
     //Servo arm;
 
     @Override
@@ -91,11 +92,11 @@ public abstract class KimmyAutonomousV2 extends LinearOpMode {
         FR = hardwareMap.dcMotor.get("fr");
         BL = hardwareMap.dcMotor.get("bl");
         BR = hardwareMap.dcMotor.get("br");
-        servoR = hardwareMap.servo.get("servoR");
+       /* servoR = hardwareMap.servo.get("servoR");
         servoL = hardwareMap.servo.get("servoL");
         servoR.setPosition(Servo.MIN_POSITION);
         servoL.setPosition(Servo.MIN_POSITION);
-//        arm = hardwareMap.servo.get("servoRB");
+//        arm = hardwareMap.servo.get("servoRB");*/
 
         //FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
@@ -118,8 +119,9 @@ public abstract class KimmyAutonomousV2 extends LinearOpMode {
         telemetry.addData("Status", "Running");
         telemetry.update();
 
-        running();
-
+        //testEncoders();
+        //running();
+        forward(500);
 
         telemetry.addData("Status", "Complete");
         telemetry.update();
@@ -159,7 +161,7 @@ public abstract class KimmyAutonomousV2 extends LinearOpMode {
             BL.setPower(0);
             BR.setPower(0);
 
-            sleep(100);
+            sleep(700);
         }
     }
 
@@ -169,6 +171,7 @@ public abstract class KimmyAutonomousV2 extends LinearOpMode {
 
     public void turnLeft(int milliseconds) throws InterruptedException {
         if (opModeIsActive()) {
+            milliseconds = (int)(milliseconds * 451/90.0);
             telemetry.addData("status","turnLeft");
             telemetry.update();
             FL.setPower(-TL_SPEED);
@@ -182,14 +185,16 @@ public abstract class KimmyAutonomousV2 extends LinearOpMode {
             FR.setPower(0);
             BL.setPower(0);
             BR.setPower(0);
-            sleep(100);
+            sleep(700);
 
         }
 
 
     }
+
     public void turnRight(int milliseconds) throws InterruptedException {
         if (opModeIsActive()) {
+            milliseconds = (int)(milliseconds * 451/90.0);
             FL.setPower(TR_SPEED);
             FR.setPower(-TR_SPEED);
             BL.setPower(TR_SPEED);
@@ -220,11 +225,15 @@ public abstract class KimmyAutonomousV2 extends LinearOpMode {
             BR.setPower(0);
         }
     }
-    public void forward2 (int distance) throws InterruptedException {
+    public void forward2 (double distance) throws InterruptedException {
         if (opModeIsActive()) {
+            FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             telemetry.addData("status", "forward2");
             telemetry.update();
-            encoderTarget = (distance * multToMove);
+            encoderTarget = (distance * multToMove * 3/7);
             FL.setPower(FW_SPEED);
             FR.setPower(FW_SPEED);
             BL.setPower(FW_SPEED);
@@ -239,14 +248,22 @@ public abstract class KimmyAutonomousV2 extends LinearOpMode {
                 BR.setPower(FW_SPEED);*/
 
             }
+            FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             FL.setPower(0);
             FR.setPower(0);
             BL.setPower(0);
             BR.setPower(0);
+            try {
+                Thread.sleep(700);
+            }catch (Exception e){}
         }
     }
     public void backward2 (int distance) throws InterruptedException {
         if (opModeIsActive()) {
+            FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             encoderTarget =  (distance * multToMove);
             while (FL.getCurrentPosition() > -encoderTarget) {
                 FL.setPower(BW_SPEED);
@@ -254,10 +271,14 @@ public abstract class KimmyAutonomousV2 extends LinearOpMode {
                 BL.setPower(BW_SPEED);
                 BR.setPower(BW_SPEED);
             }
+            FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             FL.setPower(0);
             FR.setPower(0);
             BL.setPower(0);
             BR.setPower(0);
+            try {
+                Thread.sleep(700);
+            }catch (Exception e){}
         }
     }
     public void turnLeft2 (int degree) throws InterruptedException {
@@ -339,47 +360,131 @@ public abstract class KimmyAutonomousV2 extends LinearOpMode {
         return isR;
     }
 
-    public static void Switch(Servo servo) {
+    /*public static void Switch(Servo servo) {
         if (servo.getPosition() == servo.MIN_POSITION) {
             servo.setPosition(Servo.MAX_POSITION-.25);
         }else if (servo.getPosition() == Servo.MAX_POSITION-.25){
             servo.setPosition(Servo.MIN_POSITION);
         }
-    }
+    }*/
 
     public void hitRed(){
         if(isRed()){
-            Switch(servoR);
             //forward
             try {
+                turnLeft(50);
                 Thread.sleep(100);
             }catch (Exception e){}
-            Switch(servoR);
         }else {
-            Switch(servoL);
             try {
+
+                turnRight(50);
                 Thread.sleep(100);
             } catch (Exception e) {}
-            Switch(servoL);
         }
     }
 
     public void hitBlue(){
         if(isRed()){
-            Switch(servoL);
+
             try {
+
+                turnRight(50);
                 Thread.sleep(100);
             }catch (Exception e){}
-            Switch(servoL);
         }else {
-            Switch(servoR);
+
             try {
+                turnLeft(50);
                 Thread.sleep(100);
             } catch (Exception e) {}
-            Switch(servoR);
+
         }
     }
 
-    public abstract void running() throws InterruptedException;
+    //public abstract void running() throws InterruptedException;
+
+
+    //tests
+
+    public void testEncoders () throws InterruptedException {
+        if (opModeIsActive()) {
+            FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            FL.setPower(FW_SPEED);
+            FR.setPower(FW_SPEED);
+            BL.setPower(FW_SPEED);
+            BR.setPower(FW_SPEED);
+            double time = runtime.time() + 1000;
+            while (runtime.time() < time) {
+                telemetry.addData("Status",FL.getCurrentPosition()+" "+FR.getCurrentPosition()+" "+BL.getCurrentPosition()+" "+BR.getCurrentPosition());
+                telemetry.update();
+            }
+            FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            FL.setPower(0);
+            FR.setPower(0);
+            BL.setPower(0);
+            BR.setPower(0);
+            try {
+                Thread.sleep(700);
+            }catch (Exception e){}
+        }
+    }
+
+    public void forwardWithEncodersFixed (double distance) throws InterruptedException {
+        if (opModeIsActive()) {
+            FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            telemetry.addData("status", "forward");
+            telemetry.update();
+            encoderTarget = (distance * multToMove * 3/7);
+            FL.setPower(FW_SPEED);
+            FR.setPower(FW_SPEED);
+            BL.setPower(FW_SPEED);
+            BR.setPower(FW_SPEED);
+
+            while (FL.getCurrentPosition() < encoderTarget) {
+                telemetry.addData("Status",FL.getCurrentPosition() + "  " + (encoderTarget-FL.getCurrentPosition()) );
+                telemetry.update();
+
+                if(FL.getCurrentPosition() < FR.getCurrentPosition()){
+                    FR.setPower(FR.getPower() - .01);
+                }
+                if(FL.getCurrentPosition() < BR.getCurrentPosition()){
+                    BR.setPower(BR.getPower() - .01);
+                }
+                if(FL.getCurrentPosition() < BL.getCurrentPosition()){
+                    BL.setPower(BL.getPower() - .01);
+                }
+                if(FL.getCurrentPosition() > FR.getCurrentPosition()){
+                    FR.setPower(FR.getPower() + .01);
+                }
+                if(FL.getCurrentPosition() > BR.getCurrentPosition()){
+                    BR.setPower(BR.getPower() + .01);
+                }
+                if(FL.getCurrentPosition() > BL.getCurrentPosition()){
+                    BL.setPower(BL.getPower() + .01);
+                }
+            }
+            FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            FL.setPower(0);
+            FR.setPower(0);
+            BL.setPower(0);
+            BR.setPower(0);
+            try {
+                Thread.sleep(700);
+            }catch (Exception e){}
+        }
+    }
 
     }
