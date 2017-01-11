@@ -35,6 +35,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
+import com.qualcomm.robotcore.hardware.DigitalChannelController;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 //import com.qualcomm.robotcore.hardware.GyroSensor;
@@ -52,8 +55,11 @@ public class NewAutonomous2 extends LinearOpMode {
     //private ElapsedTime runtime = new ElapsedTime();
 
     static final double TEST_SPEED = 0.4;
+    static final int LED_CHANNEL = 5;
 
     DcMotor FL, FR, BL, BR;
+    ColorSensor sensorRGB;
+    static DeviceInterfaceModule cdim;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -74,6 +80,10 @@ public class NewAutonomous2 extends LinearOpMode {
 
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
+        cdim = hardwareMap.deviceInterfaceModule.get("dim");
+        cdim.setDigitalChannelMode(LED_CHANNEL, DigitalChannelController.Mode.OUTPUT);
+        sensorRGB = hardwareMap.colorSensor.get("sensor_color");
+        cdim.setDigitalChannelState(LED_CHANNEL, false);
 
         idle();
 
@@ -174,7 +184,7 @@ public class NewAutonomous2 extends LinearOpMode {
         }
     }
 
-    /*public void hitRed(){
+    public void hitRed(){
         if(isRed()){
             //forward
             try {
@@ -183,28 +193,22 @@ public class NewAutonomous2 extends LinearOpMode {
             }catch (Exception e){}
         }else {
             try {
-
-                turnRight(50);
+                moveForward(100);
                 Thread.sleep(100);
             } catch (Exception e) {}
         }
     }
 
-    public void hitBlue(){
-        if(isRed()){
-
-            try {
-
-                turnRight(50);
-                Thread.sleep(100);
-            }catch (Exception e){}
-        }else {
-
-            try {
-                turnLeft(50);
-                Thread.sleep(100);
-            } catch (Exception e) {}
+    public boolean isRed(){
+        //soundPlayer.play(hardwareMap.appContext,0);
+        cdim.setDigitalChannelState(LED_CHANNEL, true);
+        try {
+            Thread.sleep(100);
+        }catch(Exception e){
 
         }
-    }*/
+        boolean isR = sensorRGB.red()>sensorRGB.blue();
+        cdim.setDigitalChannelState(LED_CHANNEL, false);
+        return isR;
+    }
 }
