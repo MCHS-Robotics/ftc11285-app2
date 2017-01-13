@@ -47,10 +47,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
-//import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
-//@Disabled
+@Disabled
 @Autonomous(name="KimmyAutonomousV2", group="Kaleb Autonomous")
 public class KimmyAutonomousV2 extends LinearOpMode {
 

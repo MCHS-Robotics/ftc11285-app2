@@ -2,11 +2,13 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 /**
  * Created by student on 12/8/16.
  */
 @Autonomous(name="Let's hope this works", group="Kaleb Autonomous")
+@Disabled
 public class KalebAutoNum9 extends KimmyAutonomousV2 {
     public void running() throws InterruptedException {
         revMotor();
@@ -27,5 +29,10 @@ public class KalebAutoNum9 extends KimmyAutonomousV2 {
         telemetry.update();
         FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // sleep(5000); */
+    }
+
+    @Override
+    public double getRuntime() {
+        return super.getRuntime();
     }
 }

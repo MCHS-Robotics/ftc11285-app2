@@ -40,11 +40,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
-//import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
 @Autonomous(name="CloseBallFarBeacon", group="Autonomous")
-//@Disabled
+@Disabled
 public class CloseBallFarBeacon extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();

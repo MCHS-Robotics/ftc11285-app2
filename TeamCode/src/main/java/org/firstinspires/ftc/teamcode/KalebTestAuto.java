@@ -38,11 +38,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-//import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
 @Autonomous(name="KimmyAutonomous v2", group="Autonomous")
-//@Disabled
+@Disabled
 public class KalebTestAuto extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();

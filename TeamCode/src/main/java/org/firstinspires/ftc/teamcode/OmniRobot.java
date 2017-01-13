@@ -3,11 +3,12 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 /**
  * Created by Joey on 11/11/2016.
  */
-
+@Disabled
 public class OmniRobot {
 
     public DcMotor FL, BL, FR, BR, scoop = null;

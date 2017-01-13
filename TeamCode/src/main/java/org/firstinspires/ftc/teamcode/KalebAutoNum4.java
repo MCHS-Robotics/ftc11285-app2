@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 /**
  * Created by student on 12/8/16.
  */
 @Autonomous(name="Far Beacon Red", group="Kaleb Autonomous")
+@Disabled
 public class KalebAutoNum4 extends KimmyAutonomousV2 {
     public void running () throws InterruptedException{
         //code
