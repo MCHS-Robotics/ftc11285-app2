@@ -30,13 +30,11 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.unused;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-
-import java.sql.DriverManager;
 
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 //import com.qualcomm.robotcore.hardware.GyroSensor;
@@ -47,9 +45,9 @@ import java.sql.DriverManager;
  * Spins each motor starting with the FL and going clockwise.
  */
 
-@Autonomous(name = "MotorEncoderTestingForward", group = "Autonomous")
-//@Disabled
-public class MotorEncoderTestingClass extends LinearOpMode {
+@Autonomous(name = "New Autonomous(Blue)", group = "Autonomous")
+@Disabled
+public class NewAutonomous extends LinearOpMode {
 
     //private ElapsedTime runtime = new ElapsedTime();
 
@@ -87,58 +85,15 @@ public class MotorEncoderTestingClass extends LinearOpMode {
 
         telemetry.addData("Status", "Running");
         telemetry.update();
-        //forwardWithEncoder(12);
-        ///////////////////////////////////////////////////////////////////////////////////////////
 
-        forwardWithEncoder(48);
-        turnLeft2(90);
-        sleep(3000);
-        forwardWithEncoder(48);
-        turnLeft2(90);
-        sleep(3000);
-        forwardWithEncoder(48);
-        turnLeft2(90);
-        sleep(3000);
-        forwardWithEncoder(48);
+        moveBackward(900);
+        turnRight(400);
+        moveBackward(700);
+        moveForward(200);
+        turnRight(160);
+        moveBackward(1000);
+        //hitRed();
 
-        ///////////////////////////////////////////////////////////////////////////////////////
-        /*
-//////////////////////////////////////////////////////////////////////////////////////////
-        FL.setTargetPosition(560);
-        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        FL.setPower(.25);
-        while(FL.isBusy()){
-            telemetry.addData("Status","MotorEncoder FrontLeft: " + FL.getCurrentPosition());
-            telemetry.update();
-        }
-        FL.setPower(0);
-        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//////////////////////////////////////////////////////////////////////////////////////////
-        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        FR.setTargetPosition(560);
-        FR.setPower(.25);
-        while(FR.isBusy()){}
-        FR.setPower(0);
-        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//////////////////////////////////////////////////////////////////////////////////////////
-        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BL.setTargetPosition(560);
-        BL.setPower(.25);
-        while(BL.isBusy()){}
-        BL.setPower(0);
-        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//////////////////////////////////////////////////////////////////////////////////////////
-        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BR.setTargetPosition(560);
-        BR.setPower(.25);
-        while(BR.isBusy()){
-            telemetry.addData("Status","MotorEncoder FrontLeft: " + BR.getCurrentPosition());
-            telemetry.update();
-        }
-        BR.setPower(0);
-        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//////////////////////////////////////////////////////////////////////////////////////////
-        */
         telemetry.addData("Status", "Complete");
         telemetry.update();
     }
@@ -166,7 +121,7 @@ public class MotorEncoderTestingClass extends LinearOpMode {
             FR.setPower(TEST_SPEED);
             BL.setPower(TEST_SPEED);
             BR.setPower(TEST_SPEED);
-            sleep(seconds * 1000);
+            sleep(seconds);
             FL.setPower(0);
             FR.setPower(0);
             BL.setPower(0);
@@ -254,65 +209,5 @@ public class MotorEncoderTestingClass extends LinearOpMode {
     }*/
 
     //Moving with encoders
-    public void turnLeft2(int degrees){
-        int target = 700;
-        FL.setTargetPosition(-(target));
-        FR.setTargetPosition((target));
-        BL.setTargetPosition(-(target));
-        BR.setTargetPosition((target));
 
-        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        FL.setPower(-.25);
-        FR.setPower(.25);
-        BL.setPower(-.25);
-        BR.setPower(.25);
-
-        while(FL.isBusy() && FR.isBusy() && BR.isBusy() && BL.isBusy()){
-
-        }
-        FL.setPower(0);
-        FR.setPower(0);
-        BL.setPower(0);
-        BR.setPower(0);
-
-        FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    }
-
-
-    public void forwardWithEncoder(int inches){
-        double target = 560*inches/(2*Math.PI*Math.sqrt(2));
-        //////////
-        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //////////
-        FL.setPower(.25);
-        FR.setPower(.25);
-        BL.setPower(.25);
-        BR.setPower(.25);
-        //////////
-        while(FL.getCurrentPosition() < target){
-            telemetry.addData("Status","MotorEncoder FrontLeft: " + FL.getCurrentPosition());
-            telemetry.update();
-        }
-        //////////
-        FL.setPower(0);
-        FR.setPower(0);
-        BL.setPower(0);
-        BR.setPower(0);
-        //////////
-        FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-    }
 }

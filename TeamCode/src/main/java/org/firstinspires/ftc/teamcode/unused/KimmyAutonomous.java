@@ -30,20 +30,28 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.unused;
 
+import com.google.blocks.ftcrobotcontroller.util.HardwareUtilDeviceTest;
+import com.qualcomm.hardware.adafruit.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
-@Autonomous(name="KimmyAutonomous v2", group="Autonomous")
+@Autonomous(name="KimmyAutonomous v3", group="Autonomous")
 @Disabled
-public class KalebTestAuto extends LinearOpMode {
+public class KimmyAutonomous extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     static final double FW_SPEED = 0.5;
@@ -58,17 +66,21 @@ public class KalebTestAuto extends LinearOpMode {
     static final double multToMove = stepValue / (4 * Math.PI * rad2);
     static final double degrees = Math.PI * diameterRobot * multToMove * rad2 / 360;
     // static final double moveFix = 2;
+    static Velocity velocity = new Velocity();
+    static AngularVelocity aVelocity = new AngularVelocity();
 
     //  static final double multToMove =  stepValue * rad2 *moveFix/circumferenceW;
 // degrees/360 * circ * 7.878 =
     static double encoderTarget = 0;
-    GyroSensor gyro;
+
+    // BNO055IMU gyro;
 
     DcMotor FL, FR, BL, BR;
     //Servo arm;
 
     @Override
     public void runOpMode() throws InterruptedException {
+        //gyro  = hardwareMap.get(BNO055IMU.class, "gyro");
         FL = hardwareMap.dcMotor.get("fl");
         FR = hardwareMap.dcMotor.get("fr");
         BL = hardwareMap.dcMotor.get("bl");
@@ -94,20 +106,35 @@ public class KalebTestAuto extends LinearOpMode {
         //moveArmDown();
         //moveArmUp();
 
+        //forward(571);
+        forward2(12);
+
         /*arm.setPosition(arm.MAX_POSITION - .25);
         arm.setPosition(arm.MIN_POSITION);
         forward2(2);
+        forward(1000);
+        forward2(2);
         forward(571);
-        turnLeft(1000);
+        turnLeft(450);
         forward(571);
-        turnRight(1000);
-        forward(4568);*/
-        //forward2(12);
+        turnLeft(450);
+        forward(571);
+        turnLeft(450);
+        forward(571);
+        turnLeft(450);
+        forward(571);
+        forward(4568);
+        forward2(12);
         turnLeft2(360);
         turnLeft2(90);
         turnRight2(90);
-        //turnLeft2(90);
-        //turnRight2(90);
+        turnLeft2(90);
+        turnRight2(90);
+        turnLeftG(90);
+        turnRightG(90);*/
+
+
+
 
         telemetry.addData("Status", "Complete");
         telemetry.update();
@@ -132,6 +159,8 @@ public class KalebTestAuto extends LinearOpMode {
 
     public void forward(int milliseconds) throws InterruptedException {
         if (opModeIsActive()) {
+            telemetry.addData("status", "forward");
+            telemetry.update();
             FL.setPower(FW_SPEED);
             FR.setPower(FW_SPEED);
             BL.setPower(FW_SPEED);
@@ -143,6 +172,8 @@ public class KalebTestAuto extends LinearOpMode {
             FR.setPower(0);
             BL.setPower(0);
             BR.setPower(0);
+
+            sleep(100);
         }
     }
 
@@ -152,6 +183,8 @@ public class KalebTestAuto extends LinearOpMode {
 
     public void turnLeft(int milliseconds) throws InterruptedException {
         if (opModeIsActive()) {
+            telemetry.addData("status","turnLeft");
+            telemetry.update();
             FL.setPower(-TL_SPEED);
             FR.setPower(TL_SPEED);
             BL.setPower(-TL_SPEED);
@@ -163,6 +196,7 @@ public class KalebTestAuto extends LinearOpMode {
             FR.setPower(0);
             BL.setPower(0);
             BR.setPower(0);
+            sleep(100);
 
         }
 
@@ -202,7 +236,9 @@ public class KalebTestAuto extends LinearOpMode {
     }
     public void forward2 (int distance) throws InterruptedException {
         if (opModeIsActive()) {
-            encoderTarget = (distance * multToMove);
+            telemetry.addData("status", "forward2");
+            telemetry.update();
+            encoderTarget = (distance * multToMove/1000);
             FL.setPower(FW_SPEED);
             FR.setPower(FW_SPEED);
             BL.setPower(FW_SPEED);
@@ -277,4 +313,30 @@ public class KalebTestAuto extends LinearOpMode {
             BR.setPower(0);
         }
     }
+
+    public void turnLeftG(int degrees){
+        //gyro.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+        FL.setPower(-TR_SPEED);
+        FR.setPower(TR_SPEED);
+        BL.setPower(-TR_SPEED);
+        BR.setPower(TR_SPEED);
+        while(true) {
+           // velocity = gyro.getVelocity();
+            //aVelocity = gyro.getAngularVelocity();
+
+
+
+    }
 }
+    public void turnRightG(int degrees) {
+        //gyro.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+        FL.setPower(TR_SPEED);
+        FR.setPower(-TR_SPEED);
+        BL.setPower(TR_SPEED);
+        BR.setPower(-TR_SPEED);
+        while (true) {
+          //  velocity = gyro.getVelocity();
+           // aVelocity = gyro.getAngularVelocity();
+        }
+    }
+    }

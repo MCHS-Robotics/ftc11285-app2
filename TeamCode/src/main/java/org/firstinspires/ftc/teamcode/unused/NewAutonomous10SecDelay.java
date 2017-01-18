@@ -30,9 +30,10 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.unused;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -45,9 +46,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * Spins each motor starting with the FL and going clockwise.
  */
 
-@Autonomous(name = "New Autonomous(Blue)", group = "Autonomous")
+@Autonomous(name = "New Autonomous(Blue) 10 sec", group = "Autonomous")
 //@Disabled
-public class NewAutonomous extends LinearOpMode {
+public class NewAutonomous10SecDelay extends LinearOpMode {
 
     //private ElapsedTime runtime = new ElapsedTime();
 
@@ -56,6 +57,7 @@ public class NewAutonomous extends LinearOpMode {
     DcMotor FL, FR, BL, BR;
 
     @Override
+    @Disabled
     public void runOpMode() throws InterruptedException {
 
         FL = hardwareMap.dcMotor.get("fl");
@@ -85,9 +87,9 @@ public class NewAutonomous extends LinearOpMode {
 
         telemetry.addData("Status", "Running");
         telemetry.update();
-
+        sleep(10000);
         moveBackward(900);
-        turnRight(400);
+        turnRight(200);
         moveBackward(700);
         moveForward(200);
         turnRight(160);
@@ -207,7 +209,4 @@ public class NewAutonomous extends LinearOpMode {
 
         }
     }*/
-
-    //Moving with encoders
-
 }

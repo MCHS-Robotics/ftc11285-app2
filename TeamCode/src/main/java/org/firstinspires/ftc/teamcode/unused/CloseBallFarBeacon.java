@@ -30,28 +30,22 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.unused;
 
-import com.google.blocks.ftcrobotcontroller.util.HardwareUtilDeviceTest;
-import com.qualcomm.hardware.adafruit.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.GyroSensor;
-import com.qualcomm.robotcore.hardware.HardwareDevice;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
-@Autonomous(name="KimmyAutonomous v3", group="Autonomous")
+@Autonomous(name="CloseBallFarBeacon", group="Autonomous")
 @Disabled
-public class KimmyAutonomous extends LinearOpMode {
+public class CloseBallFarBeacon extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     static final double FW_SPEED = 0.5;
@@ -107,7 +101,12 @@ public class KimmyAutonomous extends LinearOpMode {
         //moveArmUp();
 
         //forward(571);
-        forward2(12);
+        //forward2(12);
+        forward(1428);
+        turnRight(225);
+        forward(571);
+        turnRight(451);
+
 
         /*arm.setPosition(arm.MAX_POSITION - .25);
         arm.setPosition(arm.MIN_POSITION);
@@ -204,6 +203,8 @@ public class KimmyAutonomous extends LinearOpMode {
     }
     public void turnRight(int milliseconds) throws InterruptedException {
         if (opModeIsActive()) {
+            telemetry.addData("status","turnRight");
+            telemetry.update();
             FL.setPower(TR_SPEED);
             FR.setPower(-TR_SPEED);
             BL.setPower(TR_SPEED);
@@ -238,7 +239,7 @@ public class KimmyAutonomous extends LinearOpMode {
         if (opModeIsActive()) {
             telemetry.addData("status", "forward2");
             telemetry.update();
-            encoderTarget = (distance * multToMove/1000);
+            encoderTarget = (distance * multToMove);
             FL.setPower(FW_SPEED);
             FR.setPower(FW_SPEED);
             BL.setPower(FW_SPEED);

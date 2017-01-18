@@ -81,9 +81,7 @@ public class TestAutonomous extends LinearOpMode {
         telemetry.addData("Status", "Running");
         telemetry.update();
 
-        moveForward(1000);
-        turnRight(750);
-        moveForward(2000);
+        testMotors();
 
         telemetry.addData("Status", "Complete");
         telemetry.update();

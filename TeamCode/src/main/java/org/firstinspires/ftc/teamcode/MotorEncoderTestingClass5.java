@@ -36,8 +36,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import java.sql.DriverManager;
-
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 //import com.qualcomm.robotcore.hardware.GyroSensor;
 //import com.qualcomm.robotcore.util.ElapsedTime;
@@ -47,9 +45,9 @@ import java.sql.DriverManager;
  * Spins each motor starting with the FL and going clockwise.
  */
 
-@Autonomous(name = "MotorEncoderTestingForward", group = "Autonomous")
+@Autonomous(name = "Autonomous1", group = "Autonomous")
 //@Disabled
-public class MotorEncoderTestingClass extends LinearOpMode {
+public class MotorEncoderTestingClass5 extends LinearOpMode {
 
     //private ElapsedTime runtime = new ElapsedTime();
 
@@ -87,9 +85,9 @@ public class MotorEncoderTestingClass extends LinearOpMode {
 
         telemetry.addData("Status", "Running");
         telemetry.update();
-        //forwardWithEncoder(12);
+        moveForward(1);
         ///////////////////////////////////////////////////////////////////////////////////////////
-
+        /*
         forwardWithEncoder(48);
         turnLeft2(90);
         sleep(3000);
@@ -100,7 +98,7 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         turnLeft2(90);
         sleep(3000);
         forwardWithEncoder(48);
-
+        */
         ///////////////////////////////////////////////////////////////////////////////////////
         /*
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -294,10 +292,10 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //////////
-        FL.setPower(.25);
-        FR.setPower(.25);
-        BL.setPower(.25);
-        BR.setPower(.25);
+        FL.setPower(.1);
+        FR.setPower(.1);
+        BL.setPower(.1);
+        BR.setPower(.1);
         //////////
         while(FL.getCurrentPosition() < target){
             telemetry.addData("Status","MotorEncoder FrontLeft: " + FL.getCurrentPosition());
