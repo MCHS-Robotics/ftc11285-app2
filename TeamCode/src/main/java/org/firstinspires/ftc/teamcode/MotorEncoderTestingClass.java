@@ -283,22 +283,18 @@ public class MotorEncoderTestingClass extends LinearOpMode {
 
     public void forwardWithEncoder(int inches){
         double target = 560*inches/(2*Math.PI*Math.sqrt(2));
-        FL.setTargetPosition((int)Math.round(target));
-        FR.setTargetPosition((int)Math.round(target));
-        BL.setTargetPosition((int)Math.round(target));
-        BR.setTargetPosition((int)Math.round(target));
         //////////
-        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //////////
         FL.setPower(.25);
         FR.setPower(.25);
         BL.setPower(.25);
         BR.setPower(.25);
         //////////
-        while(FL.isBusy()){
+        while(FL.getCurrentPosition() < target){
             telemetry.addData("Status","MotorEncoder FrontLeft: " + FL.getCurrentPosition());
             telemetry.update();
         }
