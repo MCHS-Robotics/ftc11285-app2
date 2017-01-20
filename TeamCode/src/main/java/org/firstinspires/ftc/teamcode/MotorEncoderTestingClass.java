@@ -34,7 +34,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
+import com.qualcomm.robotcore.hardware.DigitalChannelController;
 
 import java.sql.DriverManager;
 
@@ -54,8 +57,12 @@ public class MotorEncoderTestingClass extends LinearOpMode {
     //private ElapsedTime runtime = new ElapsedTime();
 
     static final double TEST_SPEED = 0.4;
+    static final int LED_CHANNEL = 5;
+    static final double TEST_SPEED = 0.2;
 
     DcMotor FL, FR, BL, BR;
+    ColorSensor sensorRGB;
+    static DeviceInterfaceModule cdim;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -250,39 +257,48 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         }
     }
 
-    /*public void hitRed(){
+    public void hitRed(){
         if(isRed()){
             //forward
             try {
                 turnLeft(50);
                 Thread.sleep(100);
             }catch (Exception e){}
-        }else {
+        }else{
             try {
-
-                turnRight(50);
+                moveForward(100);
                 Thread.sleep(100);
-            } catch (Exception e) {}
+            }catch (Exception e) {}
         }
     }
 
     public void hitBlue(){
         if(isRed()){
-
             try {
-
-                turnRight(50);
+                moveForward(100);
                 Thread.sleep(100);
             }catch (Exception e){}
         }else {
-
             try {
                 turnLeft(50);
                 Thread.sleep(100);
             } catch (Exception e) {}
 
         }
-    }*/
+    }
+
+    public boolean isRed(){
+        //soundPlayer.play(hardwareMap.appContext,0);
+        cdim.setDigitalChannelState(LED_CHANNEL, true);
+        try {
+            Thread.sleep(100);
+        }catch(Exception e){
+
+        }
+        boolean isR = sensorRGB.red()>sensorRGB.blue();
+        cdim.setDigitalChannelState(LED_CHANNEL, false);
+        return isR;
+    }
 
     //Moving with encoders
     public void turnLeft2(int degrees){
