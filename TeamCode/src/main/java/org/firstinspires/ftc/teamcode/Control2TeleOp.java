@@ -80,7 +80,7 @@ public class Control2TeleOp extends LinearOpMode {
         scoop = hardwareMap.dcMotor.get("scoop");
         //servoR = hardwareMap.servo.get("servoR");
         //servoL = hardwareMap.servo.get("servoL");
-       // launcher = hardwareMap.dcMotor.get("launch");
+       launcher = hardwareMap.dcMotor.get("launch");
 
         /*Do pregame setup*/
         //servoR.setPosition(Servo.MIN_POSITION);
@@ -215,23 +215,22 @@ if(!polar) {
             }
 
             /*Launcher*/
-/*
-            if(gamepad2.a){
-                double time = runtime.seconds() + 5;
-                launcher.setPower(.25);
-                while(runtime.seconds() < time){
 
-                }
-                time = runtime.seconds() + 5;
-                launcher.setPower(-.25);
-                while(runtime.seconds() < time){
-
-                }
-                launcher.setPower(0);
-            }*/
+            if(gamepad1.a){
+                moveLauncher(1,.8);
+            }
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }
     }
+        public void moveLauncher(double turns, double speed){
+        launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        launcher.setTargetPosition(pos * 560);
+        launcher.setPower(speed);
+        while(launcher.isBusy()){}
+        launcher.setPower(0);
+        launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
 
 
     //Don't use use Switch or SwitchSpecial instead

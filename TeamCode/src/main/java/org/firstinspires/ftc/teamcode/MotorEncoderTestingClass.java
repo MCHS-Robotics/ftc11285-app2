@@ -101,6 +101,7 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         sleep(3000);
         forwardWithEncoder(48);
 
+
         ///////////////////////////////////////////////////////////////////////////////////////
         /*
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -182,6 +183,36 @@ public class MotorEncoderTestingClass extends LinearOpMode {
             BL.setPower(-TEST_SPEED);
             BR.setPower(-TEST_SPEED);
             sleep(seconds);
+            FL.setPower(0);
+            FR.setPower(0);
+            BL.setPower(0);
+            BR.setPower(0);
+            sleep(500);
+        }
+    }
+
+    public void moveLeft(long seconds) throws InterruptedException{
+        if (opModeIsActive()){
+            FL.setPower(-TEST_SPEED);
+            FR.setPower(TEST_SPEED);
+            BL.setPower(TEST_SPEED);
+            BR.setPower(-TEST_SPEED);
+            sleep(seconds * 1000);
+            FL.setPower(0);
+            FR.setPower(0);
+            BL.setPower(0);
+            BR.setPower(0);
+            sleep(500);
+        }
+    }
+
+    public void moveRight(long seconds) throws InterruptedException{
+        if (opModeIsActive()){
+            FL.setPower(TEST_SPEED);
+            FR.setPower(-TEST_SPEED);
+            BL.setPower(-TEST_SPEED);
+            BR.setPower(TEST_SPEED);
+            sleep(seconds * 1000);
             FL.setPower(0);
             FR.setPower(0);
             BL.setPower(0);
@@ -313,6 +344,63 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
 
+    public void leftWithEncoder(int inches){
+        double target = 560*inches/(2*Math.PI*Math.sqrt(2));
+        //////////
+        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //////////
+        FL.setPower(-.25);
+        FR.setPower(.25);
+        BL.setPower(.25);
+        BR.setPower(-.25);
+        //////////
+        while(FR.getCurrentPosition() < target){
+            telemetry.addData("Status","MotorEncoder FrontLeft: " + FR.getCurrentPosition());
+            telemetry.update();
+        }
+        //////////
+        FL.setPower(0);
+        FR.setPower(0);
+        BL.setPower(0);
+        BR.setPower(0);
+        //////////
+        FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void rightWithEncoder(int inches){
+        double target = 560*inches/(2*Math.PI*Math.sqrt(2));
+        //////////
+        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //////////
+        FL.setPower(.25);
+        FR.setPower(-.25);
+        BL.setPower(-.25);
+        BR.setPower(.25);
+        //////////
+        while(FL.getCurrentPosition() < target){
+            telemetry.addData("Status","MotorEncoder FrontLeft: " + FL.getCurrentPosition());
+            telemetry.update();
+        }
+        //////////
+        FL.setPower(0);
+        FR.setPower(0);
+        BL.setPower(0);
+        BR.setPower(0);
+        //////////
+        FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }
