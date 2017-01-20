@@ -34,12 +34,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
-import com.qualcomm.robotcore.hardware.DigitalChannelController;
-
-import java.sql.DriverManager;
 
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 //import com.qualcomm.robotcore.hardware.GyroSensor;
@@ -50,19 +45,15 @@ import java.sql.DriverManager;
  * Spins each motor starting with the FL and going clockwise.
  */
 
-@Autonomous(name = "MotorEncoderTestingForward", group = "Autonomous")
+@Autonomous(name = "Autonomous1", group = "Autonomous")
 //@Disabled
-public class MotorEncoderTestingClass extends LinearOpMode {
+public class MotorEncoderTestingClass5 extends LinearOpMode {
 
     //private ElapsedTime runtime = new ElapsedTime();
 
     static final double TEST_SPEED = 0.4;
-    static final int LED_CHANNEL = 5;
-    static final double TEST_SPEED = 0.2;
 
     DcMotor FL, FR, BL, BR;
-    ColorSensor sensorRGB;
-    static DeviceInterfaceModule cdim;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -94,9 +85,9 @@ public class MotorEncoderTestingClass extends LinearOpMode {
 
         telemetry.addData("Status", "Running");
         telemetry.update();
-        //forwardWithEncoder(12);
+        moveForward(1);
         ///////////////////////////////////////////////////////////////////////////////////////////
-
+        /*
         forwardWithEncoder(48);
         turnLeft2(90);
         sleep(3000);
@@ -107,7 +98,7 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         turnLeft2(90);
         sleep(3000);
         forwardWithEncoder(48);
-
+        */
         ///////////////////////////////////////////////////////////////////////////////////////
         /*
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -226,48 +217,39 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         }
     }
 
-    public void hitRed(){
+    /*public void hitRed(){
         if(isRed()){
             //forward
             try {
                 turnLeft(50);
                 Thread.sleep(100);
             }catch (Exception e){}
-        }else{
+        }else {
             try {
-                moveForward(100);
+
+                turnRight(50);
                 Thread.sleep(100);
-            }catch (Exception e) {}
+            } catch (Exception e) {}
         }
     }
 
     public void hitBlue(){
         if(isRed()){
+
             try {
-                moveForward(100);
+
+                turnRight(50);
                 Thread.sleep(100);
             }catch (Exception e){}
         }else {
+
             try {
                 turnLeft(50);
                 Thread.sleep(100);
             } catch (Exception e) {}
 
         }
-    }
-
-    public boolean isRed(){
-        //soundPlayer.play(hardwareMap.appContext,0);
-        cdim.setDigitalChannelState(LED_CHANNEL, true);
-        try {
-            Thread.sleep(100);
-        }catch(Exception e){
-
-        }
-        boolean isR = sensorRGB.red()>sensorRGB.blue();
-        cdim.setDigitalChannelState(LED_CHANNEL, false);
-        return isR;
-    }
+    }*/
 
     //Moving with encoders
     public void turnLeft2(int degrees){
@@ -310,10 +292,10 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //////////
-        FL.setPower(.25);
-        FR.setPower(.25);
-        BL.setPower(.25);
-        BR.setPower(.25);
+        FL.setPower(.1);
+        FR.setPower(.1);
+        BL.setPower(.1);
+        BR.setPower(.1);
         //////////
         while(FL.getCurrentPosition() < target){
             telemetry.addData("Status","MotorEncoder FrontLeft: " + FL.getCurrentPosition());

@@ -30,14 +30,11 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.unused;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
-import com.qualcomm.robotcore.hardware.DigitalChannelController;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 //import com.qualcomm.robotcore.hardware.GyroSensor;
@@ -48,18 +45,15 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  * Spins each motor starting with the FL and going clockwise.
  */
 
-@Autonomous(name = "New Autonomous(Red)", group = "Autonomous")
-//@Disabled
-public class NewAutonomous2 extends LinearOpMode {
+@Autonomous(name = "New Autonomous(Blue)2", group = "Autonomous")
+@Disabled
+public class NewAutonomous3 extends LinearOpMode {
 
     //private ElapsedTime runtime = new ElapsedTime();
 
     static final double TEST_SPEED = 0.4;
-    static final int LED_CHANNEL = 5;
 
     DcMotor FL, FR, BL, BR;
-    ColorSensor sensorRGB;
-    static DeviceInterfaceModule cdim;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -80,10 +74,6 @@ public class NewAutonomous2 extends LinearOpMode {
 
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
-        cdim = hardwareMap.deviceInterfaceModule.get("dim");
-        cdim.setDigitalChannelMode(LED_CHANNEL, DigitalChannelController.Mode.OUTPUT);
-        sensorRGB = hardwareMap.colorSensor.get("sensor_color");
-        cdim.setDigitalChannelState(LED_CHANNEL, false);
 
         idle();
 
@@ -97,10 +87,10 @@ public class NewAutonomous2 extends LinearOpMode {
         telemetry.update();
 
         moveBackward(900);
-        turnLeft(200);
+        turnRight(400);
         moveBackward(700);
         moveForward(200);
-        turnLeft(160);
+        turnRight(160);
         moveBackward(1000);
         //hitRed();
 
@@ -184,7 +174,7 @@ public class NewAutonomous2 extends LinearOpMode {
         }
     }
 
-    public void hitRed(){
+    /*public void hitRed(){
         if(isRed()){
             //forward
             try {
@@ -193,22 +183,31 @@ public class NewAutonomous2 extends LinearOpMode {
             }catch (Exception e){}
         }else {
             try {
-                moveForward(100);
+
+                turnRight(50);
                 Thread.sleep(100);
             } catch (Exception e) {}
         }
     }
 
-    public boolean isRed(){
-        //soundPlayer.play(hardwareMap.appContext,0);
-        cdim.setDigitalChannelState(LED_CHANNEL, true);
-        try {
-            Thread.sleep(100);
-        }catch(Exception e){
+    public void hitBlue(){
+        if(isRed()){
+
+            try {
+
+                turnRight(50);
+                Thread.sleep(100);
+            }catch (Exception e){}
+        }else {
+
+            try {
+                turnLeft(50);
+                Thread.sleep(100);
+            } catch (Exception e) {}
 
         }
-        boolean isR = sensorRGB.red()>sensorRGB.blue();
-        cdim.setDigitalChannelState(LED_CHANNEL, false);
-        return isR;
-    }
+    }*/
+
+    //Moving with encoders
+
 }

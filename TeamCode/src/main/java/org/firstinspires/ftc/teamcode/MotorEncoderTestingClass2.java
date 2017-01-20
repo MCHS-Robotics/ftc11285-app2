@@ -34,12 +34,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
-import com.qualcomm.robotcore.hardware.DigitalChannelController;
-
-import java.sql.DriverManager;
 
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 //import com.qualcomm.robotcore.hardware.GyroSensor;
@@ -50,19 +45,15 @@ import java.sql.DriverManager;
  * Spins each motor starting with the FL and going clockwise.
  */
 
-@Autonomous(name = "MotorEncoderTestingForward", group = "Autonomous")
+@Autonomous(name = "EncoderTesting2", group = "Autonomous")
 //@Disabled
-public class MotorEncoderTestingClass extends LinearOpMode {
+public class MotorEncoderTestingClass2 extends LinearOpMode {
 
     //private ElapsedTime runtime = new ElapsedTime();
 
     static final double TEST_SPEED = 0.4;
-    static final int LED_CHANNEL = 5;
-    static final double TEST_SPEED = 0.2;
 
     DcMotor FL, FR, BL, BR;
-    ColorSensor sensorRGB;
-    static DeviceInterfaceModule cdim;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -94,21 +85,8 @@ public class MotorEncoderTestingClass extends LinearOpMode {
 
         telemetry.addData("Status", "Running");
         telemetry.update();
-        //forwardWithEncoder(12);
-        ///////////////////////////////////////////////////////////////////////////////////////////
 
-        forwardWithEncoder(48);
-        turnLeft2(90);
-        sleep(3000);
-        forwardWithEncoder(48);
-        turnLeft2(90);
-        sleep(3000);
-        forwardWithEncoder(48);
-        turnLeft2(90);
-        sleep(3000);
-        forwardWithEncoder(48);
-
-        ///////////////////////////////////////////////////////////////////////////////////////
+        forwardWithEncoder(1);
         /*
 //////////////////////////////////////////////////////////////////////////////////////////
         FL.setTargetPosition(560);
@@ -173,7 +151,7 @@ public class MotorEncoderTestingClass extends LinearOpMode {
             FR.setPower(TEST_SPEED);
             BL.setPower(TEST_SPEED);
             BR.setPower(TEST_SPEED);
-            sleep(seconds * 1000);
+            sleep(seconds);
             FL.setPower(0);
             FR.setPower(0);
             BL.setPower(0);
@@ -226,48 +204,39 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         }
     }
 
-    public void hitRed(){
+    /*public void hitRed(){
         if(isRed()){
             //forward
             try {
                 turnLeft(50);
                 Thread.sleep(100);
             }catch (Exception e){}
-        }else{
+        }else {
             try {
-                moveForward(100);
+
+                turnRight(50);
                 Thread.sleep(100);
-            }catch (Exception e) {}
+            } catch (Exception e) {}
         }
     }
 
     public void hitBlue(){
         if(isRed()){
+
             try {
-                moveForward(100);
+
+                turnRight(50);
                 Thread.sleep(100);
             }catch (Exception e){}
         }else {
+
             try {
                 turnLeft(50);
                 Thread.sleep(100);
             } catch (Exception e) {}
 
         }
-    }
-
-    public boolean isRed(){
-        //soundPlayer.play(hardwareMap.appContext,0);
-        cdim.setDigitalChannelState(LED_CHANNEL, true);
-        try {
-            Thread.sleep(100);
-        }catch(Exception e){
-
-        }
-        boolean isR = sensorRGB.red()>sensorRGB.blue();
-        cdim.setDigitalChannelState(LED_CHANNEL, false);
-        return isR;
-    }
+    }*/
 
     //Moving with encoders
     public void turnLeft2(int degrees){
@@ -303,27 +272,30 @@ public class MotorEncoderTestingClass extends LinearOpMode {
 
 
     public void forwardWithEncoder(int inches){
-        double target = 560*inches/(2*Math.PI*Math.sqrt(2));
+        double target = 560*inches;
         //////////
-        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FL.setTargetPosition((int)target);
+        FR.setTargetPosition((int)target);
+        BL.setTargetPosition((int)target);
+        BR.setTargetPosition((int)target);
         //////////
         FL.setPower(.25);
         FR.setPower(.25);
         BL.setPower(.25);
         BR.setPower(.25);
         //////////
-        while(FL.getCurrentPosition() < target){
+        while(FL.isBusy()||FR.isBusy()||BL.isBusy()||BR.isBusy()){
             telemetry.addData("Status","MotorEncoder FrontLeft: " + FL.getCurrentPosition());
             telemetry.update();
+            if(!FL.isBusy())FL.setPower(0);
+            if(!FR.isBusy())FR.setPower(0);
+            if(!BL.isBusy())BL.setPower(0);
+            if(!BR.isBusy())BR.setPower(0);
         }
-        //////////
-        FL.setPower(0);
-        FR.setPower(0);
-        BL.setPower(0);
-        BR.setPower(0);
         //////////
         FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

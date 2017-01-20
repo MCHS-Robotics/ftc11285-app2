@@ -30,32 +30,49 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.unused;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+//import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 
-@Autonomous(name="JayAutonomous v1", group="11285")
-@Disabled
-public class JayAutonomous extends LinearOpMode {
+@Autonomous(name="AutoMap", group="Autonomous")
+//@Disabled
+public abstract class AutonomousMap extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    static final double FW_SPEED = 0.5;
-
-    DcMotor FL, FR, BL, BR;
-
     @Override
     public void runOpMode() throws InterruptedException {
+        initialize();
+        idle();
 
-        FL = hardwareMap.dcMotor.get("fl");
-        FR = hardwareMap.dcMotor.get("fr");
+        telemetry.addData("Status", "Initializing");
+        telemetry.update();
 
+        waitForStart();
+
+        telemetry.addData("Status", "Running");
+        telemetry.update();
+
+        running();
+
+        telemetry.addData("Status", "Complete");
+        telemetry.update();
     }
+
+    public abstract void initialize();
+    public abstract void running();
+    public abstract void forward(double distance);
+    public abstract void backward(double distance);
+    public abstract void left(double degrees);
+    public abstract void right(double degrees);
+
+
 
 }

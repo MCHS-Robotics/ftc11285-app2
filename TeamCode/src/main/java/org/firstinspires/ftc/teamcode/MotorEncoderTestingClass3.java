@@ -45,9 +45,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * Spins each motor starting with the FL and going clockwise.
  */
 
-@Autonomous(name = "New Autonomous(Red) 10 sec", group = "Autonomous")
+@Autonomous(name = "Autonomous3", group = "Autonomous")
 //@Disabled
-public class NewAutonomous210SecDelay extends LinearOpMode {
+public class MotorEncoderTestingClass3 extends LinearOpMode {
 
     //private ElapsedTime runtime = new ElapsedTime();
 
@@ -85,15 +85,58 @@ public class NewAutonomous210SecDelay extends LinearOpMode {
 
         telemetry.addData("Status", "Running");
         telemetry.update();
-        sleep(10000);
-        moveBackward(900);
-        turnLeft(200);
-        moveBackward(700);
-        moveForward(200);
-        turnLeft(160);
-        moveBackward(1000);
-        //hitRed();
-
+        moveForward(3);
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        /*
+        forwardWithEncoder(48);
+        turnLeft2(90);
+        sleep(3000);
+        forwardWithEncoder(48);
+        turnLeft2(90);
+        sleep(3000);
+        forwardWithEncoder(48);
+        turnLeft2(90);
+        sleep(3000);
+        forwardWithEncoder(48);
+        */
+        ///////////////////////////////////////////////////////////////////////////////////////
+        /*
+//////////////////////////////////////////////////////////////////////////////////////////
+        FL.setTargetPosition(560);
+        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FL.setPower(.25);
+        while(FL.isBusy()){
+            telemetry.addData("Status","MotorEncoder FrontLeft: " + FL.getCurrentPosition());
+            telemetry.update();
+        }
+        FL.setPower(0);
+        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//////////////////////////////////////////////////////////////////////////////////////////
+        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FR.setTargetPosition(560);
+        FR.setPower(.25);
+        while(FR.isBusy()){}
+        FR.setPower(0);
+        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//////////////////////////////////////////////////////////////////////////////////////////
+        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BL.setTargetPosition(560);
+        BL.setPower(.25);
+        while(BL.isBusy()){}
+        BL.setPower(0);
+        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//////////////////////////////////////////////////////////////////////////////////////////
+        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BR.setTargetPosition(560);
+        BR.setPower(.25);
+        while(BR.isBusy()){
+            telemetry.addData("Status","MotorEncoder FrontLeft: " + BR.getCurrentPosition());
+            telemetry.update();
+        }
+        BR.setPower(0);
+        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//////////////////////////////////////////////////////////////////////////////////////////
+        */
         telemetry.addData("Status", "Complete");
         telemetry.update();
     }
@@ -121,7 +164,7 @@ public class NewAutonomous210SecDelay extends LinearOpMode {
             FR.setPower(TEST_SPEED);
             BL.setPower(TEST_SPEED);
             BR.setPower(TEST_SPEED);
-            sleep(seconds);
+            sleep(seconds * 1000);
             FL.setPower(0);
             FR.setPower(0);
             BL.setPower(0);
@@ -207,4 +250,67 @@ public class NewAutonomous210SecDelay extends LinearOpMode {
 
         }
     }*/
+
+    //Moving with encoders
+    public void turnLeft2(int degrees){
+        int target = 700;
+        FL.setTargetPosition(-(target));
+        FR.setTargetPosition((target));
+        BL.setTargetPosition(-(target));
+        BR.setTargetPosition((target));
+
+        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        FL.setPower(-.25);
+        FR.setPower(.25);
+        BL.setPower(-.25);
+        BR.setPower(.25);
+
+        while(FL.isBusy() && FR.isBusy() && BR.isBusy() && BL.isBusy()){
+
+        }
+        FL.setPower(0);
+        FR.setPower(0);
+        BL.setPower(0);
+        BR.setPower(0);
+
+        FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+
+    public void forwardWithEncoder(int inches){
+        double target = 560*inches/(2*Math.PI*Math.sqrt(2));
+        //////////
+        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //////////
+        FL.setPower(.1);
+        FR.setPower(.1);
+        BL.setPower(.1);
+        BR.setPower(.1);
+        //////////
+        while(FL.getCurrentPosition() < target){
+            telemetry.addData("Status","MotorEncoder FrontLeft: " + FL.getCurrentPosition());
+            telemetry.update();
+        }
+        //////////
+        FL.setPower(0);
+        FR.setPower(0);
+        BL.setPower(0);
+        BR.setPower(0);
+        //////////
+        FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+    }
 }
