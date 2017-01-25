@@ -45,7 +45,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * Spins each motor starting with the FL and going clockwise.
  */
 
-@Autonomous(name = "Blue Far", group = "Autonomous")
+@Autonomous(name = "Blue Fa", group = "Autonomous")
 //@Disabled
 public class BlueFar extends LinearOpMode {
 

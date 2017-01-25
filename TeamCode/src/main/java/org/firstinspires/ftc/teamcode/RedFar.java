@@ -34,12 +34,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
-import com.qualcomm.robotcore.hardware.DigitalChannelController;
-
-import java.sql.DriverManager;
 
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 //import com.qualcomm.robotcore.hardware.GyroSensor;
@@ -50,19 +45,15 @@ import java.sql.DriverManager;
  * Spins each motor starting with the FL and going clockwise.
  */
 
-@Autonomous(name = "unused", group = "Commands")
+@Autonomous(name = "Blue Far", group = "Autonomous")
 //@Disabled
-public class MotorEncoderTestingClass extends LinearOpMode {
+public class RedFar extends LinearOpMode {
 
     //private ElapsedTime runtime = new ElapsedTime();
 
     static final double TEST_SPEED = 0.4;
-    static final int LED_CHANNEL = 5;
-    //static final double TEST_SPEED = 0.2;
 
-    DcMotor FL, FR, BL, BR,launcher,scoop;
-    ColorSensor sensorRGB;
-    static DeviceInterfaceModule cdim;
+    DcMotor FL, FR, BL, BR;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -71,14 +62,11 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         FR = hardwareMap.dcMotor.get("fr");
         BL = hardwareMap.dcMotor.get("bl");
         BR = hardwareMap.dcMotor.get("br");
-        scoop = hardwareMap.dcMotor.get("scoop");
         FL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        launcher = hardwareMap.dcMotor.get("launch");
-        launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        moveLauncher(.5,.8);
+
         /**
          * Reverse FL and BL if using all ANDYMARK motors
          * Reverse FR and BR if using all TETRIX motors
@@ -99,11 +87,18 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         telemetry.update();
         //forwardWithEncoder(12);
         ///////////////////////////////////////////////////////////////////////////////////////////
+        backwardWithEncoder(12);
+        turnRight2(135);
+        backwardWithEncoder(36);
+        turnLeft2(45);
+        backwardWithEncoder(48);
+        turnRight2(90);
+        backwardWithEncoder(12);
+        turnLeft2(90);
+        backwardWithEncoder(12);
 
-        sleep(2000);
-        moveLauncher(1, -.8);
-        moveScoop(2,-.3);
-        moveLauncher(1,-.8);
+
+
 
         ///////////////////////////////////////////////////////////////////////////////////////
         /*
@@ -253,52 +248,43 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         }
     }
 
-    public void hitRed(){
+    /*public void hitRed(){
         if(isRed()){
             //forward
             try {
                 turnLeft(50);
                 Thread.sleep(100);
             }catch (Exception e){}
-        }else{
+        }else {
             try {
-                moveForward(100);
+
+                turnRight(50);
                 Thread.sleep(100);
-            }catch (Exception e) {}
+            } catch (Exception e) {}
         }
     }
 
     public void hitBlue(){
         if(isRed()){
+
             try {
-                moveForward(100);
+
+                turnRight(50);
                 Thread.sleep(100);
             }catch (Exception e){}
         }else {
+
             try {
                 turnLeft(50);
                 Thread.sleep(100);
             } catch (Exception e) {}
 
         }
-    }
-
-    public boolean isRed(){
-        //soundPlayer.play(hardwareMap.appContext,0);
-        cdim.setDigitalChannelState(LED_CHANNEL, true);
-        try {
-            Thread.sleep(100);
-        }catch(Exception e){
-
-        }
-        boolean isR = sensorRGB.red()>sensorRGB.blue();
-        cdim.setDigitalChannelState(LED_CHANNEL, false);
-        return isR;
-    }
+    }*/
 
     //Moving with encoders
     public void turnLeft2(int degrees){
-        int target = 700;
+        int target = (int)(700/90.0*degrees);
         FL.setTargetPosition(-(target));
         FR.setTargetPosition((target));
         BL.setTargetPosition(-(target));
@@ -327,7 +313,36 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
+    public void turnRight2(int degrees){
+        int target = (int)(700/90.0*degrees);
+        FL.setTargetPosition((target));
+        FR.setTargetPosition(-(target));
+        BL.setTargetPosition((target));
+        BR.setTargetPosition(-(target));
 
+        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        FL.setPower(.25);
+        FR.setPower(-.25);
+        BL.setPower(.25);
+        BR.setPower(-.25);
+
+        while(FL.isBusy() && FR.isBusy() && BR.isBusy() && BL.isBusy()){
+
+        }
+        FL.setPower(0);
+        FR.setPower(0);
+        BL.setPower(0);
+        BR.setPower(0);
+
+        FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
 
     public void forwardWithEncoder(int inches){
         double target = 560*inches/(2*Math.PI*Math.sqrt(2));
@@ -415,24 +430,32 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
-
-    public void moveLauncher(double turns, double speed) {
-        launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        launcher.setTargetPosition(-(int) (turns * 1680));
-        launcher.setPower(speed);
-        while (launcher.isBusy()) {
-            telemetry.addData("Status", "" + launcher.getCurrentPosition());
+    public void backwardWithEncoder(int inches){
+        double target = -560*inches/(2*Math.PI*Math.sqrt(2));
+        //////////
+        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //////////
+        FL.setPower(-.25);
+        FR.setPower(-.25);
+        BL.setPower(-.25);
+        BR.setPower(-.25);
+        //////////
+        while(FL.getCurrentPosition() < target){
+            telemetry.addData("Status","MotorEncoder FrontLeft: " + FL.getCurrentPosition());
             telemetry.update();
         }
-        launcher.setPower(0);
-        launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    }
-
-    public void moveScoop(double seconds, double power){
-        scoop.setPower(power);
-        sleep((int)(seconds*1000));
-        scoop.setPower(0);
-
+        //////////
+        FL.setPower(0);
+        FR.setPower(0);
+        BL.setPower(0);
+        BR.setPower(0);
+        //////////
+        FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }

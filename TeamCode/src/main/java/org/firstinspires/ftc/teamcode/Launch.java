@@ -37,9 +37,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
-import com.qualcomm.robotcore.hardware.DigitalChannelController;
-
-import java.sql.DriverManager;
 
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 //import com.qualcomm.robotcore.hardware.GyroSensor;
@@ -50,9 +47,9 @@ import java.sql.DriverManager;
  * Spins each motor starting with the FL and going clockwise.
  */
 
-@Autonomous(name = "unused", group = "Commands")
+@Autonomous(name = "launch", group = "Auto")
 //@Disabled
-public class MotorEncoderTestingClass extends LinearOpMode {
+public class Launch extends LinearOpMode {
 
     //private ElapsedTime runtime = new ElapsedTime();
 
@@ -78,7 +75,7 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         launcher = hardwareMap.dcMotor.get("launch");
         launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        moveLauncher(.5,.8);
+       // moveLauncher(.5,.8);
         /**
          * Reverse FL and BL if using all ANDYMARK motors
          * Reverse FR and BR if using all TETRIX motors
@@ -102,8 +99,6 @@ public class MotorEncoderTestingClass extends LinearOpMode {
 
         sleep(2000);
         moveLauncher(1, -.8);
-        moveScoop(2,-.3);
-        moveLauncher(1,-.8);
 
         ///////////////////////////////////////////////////////////////////////////////////////
         /*

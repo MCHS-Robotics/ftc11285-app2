@@ -45,7 +45,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * Spins each motor starting with the FL and going clockwise.
  */
 
-@Autonomous(name = "Blue Close", group = "Autonomous")
+@Autonomous(name = "Blue Close2", group = "Autonomous")
 //@Disabled
 public class BlueClose extends LinearOpMode {
 

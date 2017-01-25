@@ -37,9 +37,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-//import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 //import com.qualcomm.robotcore.hardware.GyroSensor;
 //import com.qualcomm.robotcore.util.ElapsedTime;
+
 
 /**
  * OpMode for testing correct connection and direction of drive motors.
@@ -47,7 +47,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  */
 
 @Autonomous(name = "New Autonomous(Blue) 10 sec", group = "Autonomous")
-//@Disabled
+@Disabled
 public class NewAutonomous10SecDelay extends LinearOpMode {
 
     //private ElapsedTime runtime = new ElapsedTime();
@@ -57,7 +57,7 @@ public class NewAutonomous10SecDelay extends LinearOpMode {
     DcMotor FL, FR, BL, BR;
 
     @Override
-    @Disabled
+
     public void runOpMode() throws InterruptedException {
 
         FL = hardwareMap.dcMotor.get("fl");
