@@ -55,12 +55,11 @@ import java.sql.DriverManager;
 public class MotorEncoderTestingClass extends LinearOpMode {
 
     //private ElapsedTime runtime = new ElapsedTime();
-
     static final double TEST_SPEED = 0.4;
     static final int LED_CHANNEL = 5;
     //static final double TEST_SPEED = 0.2;
 
-    DcMotor FL, FR, BL, BR,launcher,scoop;
+    DcMotor FL, FR, BL, BR, launcher, scoop;
     ColorSensor sensorRGB;
     static DeviceInterfaceModule cdim;
 
@@ -78,7 +77,7 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         launcher = hardwareMap.dcMotor.get("launch");
         launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        moveLauncher(.5,.8);
+        moveLauncher(.5, .8);
         /**
          * Reverse FL and BL if using all ANDYMARK motors
          * Reverse FR and BR if using all TETRIX motors
@@ -97,13 +96,14 @@ public class MotorEncoderTestingClass extends LinearOpMode {
 
         telemetry.addData("Status", "Running");
         telemetry.update();
+
         //forwardWithEncoder(12);
         ///////////////////////////////////////////////////////////////////////////////////////////
 
         sleep(2000);
         moveLauncher(1, -.8);
-        moveScoop(2,-.3);
-        moveLauncher(1,-.8);
+        moveScoop(2, -.3);
+        moveLauncher(1, -.8);
 
         ///////////////////////////////////////////////////////////////////////////////////////
         /*
@@ -164,8 +164,8 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         }
     }
 
-    public void moveForward(long seconds) throws InterruptedException{
-        if (opModeIsActive()){
+    public void moveForward(long seconds) throws InterruptedException {
+        if (opModeIsActive()) {
             FL.setPower(TEST_SPEED);
             FR.setPower(TEST_SPEED);
             BL.setPower(TEST_SPEED);
@@ -179,8 +179,8 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         }
     }
 
-    public void moveBackward(long seconds) throws InterruptedException{
-        if (opModeIsActive()){
+    public void moveBackward(long seconds) throws InterruptedException {
+        if (opModeIsActive()) {
             FL.setPower(-TEST_SPEED);
             FR.setPower(-TEST_SPEED);
             BL.setPower(-TEST_SPEED);
@@ -194,8 +194,8 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         }
     }
 
-    public void moveLeft(long seconds) throws InterruptedException{
-        if (opModeIsActive()){
+    public void moveLeft(long seconds) throws InterruptedException {
+        if (opModeIsActive()) {
             FL.setPower(-TEST_SPEED);
             FR.setPower(TEST_SPEED);
             BL.setPower(TEST_SPEED);
@@ -209,8 +209,8 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         }
     }
 
-    public void moveRight(long seconds) throws InterruptedException{
-        if (opModeIsActive()){
+    public void moveRight(long seconds) throws InterruptedException {
+        if (opModeIsActive()) {
             FL.setPower(TEST_SPEED);
             FR.setPower(-TEST_SPEED);
             BL.setPower(-TEST_SPEED);
@@ -224,8 +224,8 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         }
     }
 
-    public void turnLeft(long seconds) throws InterruptedException{
-        if (opModeIsActive()){
+    public void turnLeft(long seconds) throws InterruptedException {
+        if (opModeIsActive()) {
             FL.setPower(-TEST_SPEED);
             FR.setPower(TEST_SPEED);
             BL.setPower(-TEST_SPEED);
@@ -239,8 +239,8 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         }
     }
 
-    public void turnRight(long seconds) throws InterruptedException{
-        if (opModeIsActive()){
+    public void turnRight(long seconds) throws InterruptedException {
+        if (opModeIsActive()) {
             FL.setPower(TEST_SPEED);
             FR.setPower(-TEST_SPEED);
             BL.setPower(TEST_SPEED);
@@ -253,51 +253,55 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         }
     }
 
-    public void hitRed(){
-        if(isRed()){
+    public void hitRed() {
+        if (isRed()) {
             //forward
             try {
                 turnLeft(50);
                 Thread.sleep(100);
-            }catch (Exception e){}
-        }else{
+            } catch (Exception e) {
+            }
+        } else {
             try {
                 moveForward(100);
                 Thread.sleep(100);
-            }catch (Exception e) {}
+            } catch (Exception e) {
+            }
         }
     }
 
-    public void hitBlue(){
-        if(isRed()){
+    public void hitBlue() {
+        if (isRed()) {
             try {
                 moveForward(100);
                 Thread.sleep(100);
-            }catch (Exception e){}
-        }else {
+            } catch (Exception e) {
+            }
+        } else {
             try {
                 turnLeft(50);
                 Thread.sleep(100);
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
 
         }
     }
 
-    public boolean isRed(){
+    public boolean isRed() {
         //soundPlayer.play(hardwareMap.appContext,0);
         cdim.setDigitalChannelState(LED_CHANNEL, true);
         try {
             Thread.sleep(100);
-        }catch(Exception e){
+        } catch (Exception e) {
 
         }
-        boolean isR = sensorRGB.red()>sensorRGB.blue();
+        boolean isR = sensorRGB.red() > sensorRGB.blue();
         cdim.setDigitalChannelState(LED_CHANNEL, false);
         return isR;
     }
 
     //Moving with encoders
-    public void turnLeft2(int degrees){
+    public void turnLeft2(int degrees) {
         int target = 700;
         FL.setTargetPosition(-(target));
         FR.setTargetPosition((target));
@@ -314,8 +318,14 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         BL.setPower(-.25);
         BR.setPower(.25);
 
-        while(FL.isBusy() && FR.isBusy() && BR.isBusy() && BL.isBusy()){
-
+        while (FL.isBusy() && FR.isBusy() && BR.isBusy() && BL.isBusy()) {
+            telemetry.addData("FL", "" + FL.getCurrentPosition());
+            telemetry.update();
+            telemetry.addData("FR", "" + FR.getCurrentPosition());
+            telemetry.update();
+            telemetry.addData("BL", "" + BL.getCurrentPosition());
+            telemetry.update();
+            telemetry.addData("BR", "" + BR.getCurrentPosition());
         }
         FL.setPower(0);
         FR.setPower(0);
@@ -329,8 +339,8 @@ public class MotorEncoderTestingClass extends LinearOpMode {
     }
 
 
-    public void forwardWithEncoder(int inches){
-        double target = 560*inches/(2*Math.PI*Math.sqrt(2));
+    public void forwardWithEncoder(int inches) {
+        double target = 560 * inches / (2 * Math.PI * Math.sqrt(2));
         //////////
         FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -342,9 +352,14 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         BL.setPower(.25);
         BR.setPower(.25);
         //////////
-        while(FL.getCurrentPosition() < target){
-            telemetry.addData("Status","MotorEncoder FrontLeft: " + FL.getCurrentPosition());
+        while (FL.getCurrentPosition() < target) {
+            telemetry.addData("Status", "MotorEncoder FrontLeft: " + FL.getCurrentPosition());
             telemetry.update();
+            telemetry.addData("Status", "MotorEncoder FrontRight: " + FR.getCurrentPosition());
+            telemetry.update();
+            telemetry.addData("Status", "MotorEncoder BackLeft: " + BR.getCurrentPosition());
+            telemetry.update();
+            telemetry.addData("Status", "MotorEncoder BackLeft: " + BL.getCurrentPosition());
         }
         //////////
         FL.setPower(0);
@@ -358,8 +373,8 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void leftWithEncoder(int inches){
-        double target = 560*inches/(2*Math.PI*Math.sqrt(2));
+    public void leftWithEncoder(int inches) {
+        double target = 560 * inches / (2 * Math.PI * Math.sqrt(2));
         //////////
         FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -371,8 +386,14 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         BL.setPower(.25);
         BR.setPower(-.25);
         //////////
-        while(FR.getCurrentPosition() < target){
-            telemetry.addData("Status","MotorEncoder FrontLeft: " + FR.getCurrentPosition());
+        while (FR.getCurrentPosition() < target) {
+            telemetry.addData("Status", "MotorEncoder FrontLeft: " + FL.getCurrentPosition());
+            telemetry.update();
+            telemetry.addData("Status", "MotorEncoder BackRight: " + BR.getCurrentPosition());
+            telemetry.update();
+            telemetry.addData("Status", "MotorEncoder BackLeft: " + BL.getCurrentPosition());
+            telemetry.update();
+            telemetry.addData("Status", "MotorEncoder FrontRight: " + FR.getCurrentPosition());
             telemetry.update();
         }
         //////////
@@ -387,8 +408,8 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void rightWithEncoder(int inches){
-        double target = 560*inches/(2*Math.PI*Math.sqrt(2));
+    public void rightWithEncoder(int inches) {
+        double target = 560 * inches / (2 * Math.PI * Math.sqrt(2));
         //////////
         FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -400,9 +421,14 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         BL.setPower(-.25);
         BR.setPower(.25);
         //////////
-        while(FL.getCurrentPosition() < target){
-            telemetry.addData("Status","MotorEncoder FrontLeft: " + FL.getCurrentPosition());
+        while (FL.getCurrentPosition() < target) {
+            telemetry.addData("Status", "MotorEncoder FrontLeft: " + FL.getCurrentPosition());
             telemetry.update();
+            telemetry.addData("Status", "MotorEncoder FrontRight: " + FR.getCurrentPosition());
+            telemetry.update();
+            telemetry.addData("Status", "MotorEncoder BackLeft: " + BL.getCurrentPosition());
+            telemetry.update();
+            telemetry.addData("Status", "MotorEncoder BackRight: " + BR.getCurrentPosition());
         }
         //////////
         FL.setPower(0);
@@ -429,9 +455,9 @@ public class MotorEncoderTestingClass extends LinearOpMode {
         launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void moveScoop(double seconds, double power){
+    public void moveScoop(double seconds, double power) {
         scoop.setPower(power);
-        sleep((int)(seconds*1000));
+        sleep((int) (seconds * 1000));
         scoop.setPower(0);
 
     }

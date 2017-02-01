@@ -86,7 +86,7 @@ public class MotorEncoderTestingClass2 extends LinearOpMode {
         telemetry.addData("Status", "Running");
         telemetry.update();
 
-        forwardWithEncoder(1);
+        //forwardWithEncoder(1);
         /*
 //////////////////////////////////////////////////////////////////////////////////////////
         FL.setTargetPosition(560);
@@ -271,7 +271,7 @@ public class MotorEncoderTestingClass2 extends LinearOpMode {
     }
 
 
-    public void forwardWithEncoder(int inches){
+    public void forwardLeftWithEncoder(int inches){
         double target = 560*inches;
         //////////
         FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -303,4 +303,103 @@ public class MotorEncoderTestingClass2 extends LinearOpMode {
         BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
     }
+
+    public void backwardLeftwithEncoder(int inches)
+    {
+        double target = 560 * inches;
+        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FL.setTargetPosition((int)target);
+        FR.setTargetPosition((int)target);
+        BL.setTargetPosition((int)target);
+        BR.setTargetPosition((int)target);
+        //////////
+        FL.setPower(.25);
+        FR.setPower(.25);
+        BL.setPower(.25);
+        BR.setPower(.25);
+        //////////
+        while(FL.isBusy()||FR.isBusy()||BL.isBusy()||BR.isBusy()){
+            telemetry.addData("Status","MotorEncoder BackLeft: " + BL.getCurrentPosition());
+            telemetry.update();
+            if(!FL.isBusy())FL.setPower(0);
+            if(!FR.isBusy())FR.setPower(0);
+            if(!BL.isBusy())BL.setPower(0);
+            if(!BR.isBusy())BR.setPower(0);
+        }
+        //////////
+        FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+    }
+
+    public void forwardRightwithEncoder(int inches)
+    {
+        double target = 560 * inches;
+        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FL.setTargetPosition((int)target);
+        FR.setTargetPosition((int)target);
+        BL.setTargetPosition((int)target);
+        BR.setTargetPosition((int)target);
+        //////////
+        FL.setPower(.25);
+        FR.setPower(.25);
+        BL.setPower(.25);
+        BR.setPower(.25);
+        //////////
+        while(FL.isBusy()||FR.isBusy()||BL.isBusy()||BR.isBusy()){
+            telemetry.addData("Status","MotorEncoder FrontRight: " + FR.getCurrentPosition());
+            telemetry.update();
+            if(!FL.isBusy())FL.setPower(0);
+            if(!FR.isBusy())FR.setPower(0);
+            if(!BL.isBusy())BL.setPower(0);
+            if(!BR.isBusy())BR.setPower(0);
+        }
+        //////////
+        FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+    }
+
+    public void backRightwithEncoder(int inches) {
+        double target = 560 * inches;
+        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FL.setTargetPosition((int) target);
+        FR.setTargetPosition((int) target);
+        BL.setTargetPosition((int) target);
+        BR.setTargetPosition((int) target);
+        //////////
+        FL.setPower(.25);
+        FR.setPower(.25);
+        BL.setPower(.25);
+        BR.setPower(.25);
+        //////////
+        while (FL.isBusy() || FR.isBusy() || BL.isBusy() || BR.isBusy()) {
+            telemetry.addData("Status", "MotorEncoder FrontRight: " + BR.getCurrentPosition());
+            telemetry.update();
+            if (!FL.isBusy()) FL.setPower(0);
+            if (!FR.isBusy()) FR.setPower(0);
+            if (!BL.isBusy()) BL.setPower(0);
+            if (!BR.isBusy()) BR.setPower(0);
+        }
+        //////////
+        FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+    }
+
 }

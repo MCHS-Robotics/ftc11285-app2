@@ -35,9 +35,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 //import com.qualcomm.robotcore.hardware.GyroSensor;
@@ -48,22 +46,18 @@ import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
  * Spins each motor starting with the FL and going clockwise.
  */
 
-@Autonomous(name = "LightSensorTesting", group = "Commands")
+@Autonomous(name = "TestTheDifferentForwards", group = "Commands")
 //@Disabled
-public class LightSensorTest extends LinearOpMode {
+public class whatIsThis extends LinearOpMode {
 
     //private ElapsedTime runtime = new ElapsedTime();
 
 
     DcMotor FL, FR, BL, BR;
-    public double threshold = 3.5;
-    public AnalogInput lightSensor;
-    double low;
-    double high;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
-        lightSensor = hardwareMap.analogInput.get("nP");
         FL = hardwareMap.dcMotor.get("fl");
         FR = hardwareMap.dcMotor.get("fr");
         BL = hardwareMap.dcMotor.get("bl");
@@ -74,8 +68,6 @@ public class LightSensorTest extends LinearOpMode {
         BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
-        low = 10;
-        high = 0;
         //lightSensorWorker.calibrate();
 
         idle();
@@ -89,47 +81,32 @@ public class LightSensorTest extends LinearOpMode {
         telemetry.addData("Status", "Running");
         telemetry.update();
       ////////////////////////////////////////////////////////////////
-        forward(.15);
-
-
-        telemetry.addData("Status", "low: " + low + "  high: "+ high);
+        forward(10);
+        telemetry.addData("Status", "Complete");
         telemetry.update();
-        sleep(10000);
     }
 
-    public void forward(double power){
+
+    public void forward(double inches){
+        double target = 560 * inches / (4 * Math.PI * Math.sqrt(2));
         FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //////////
-        FL.setPower(power);
-        FR.setPower(power);
-        BL.setPower(power);
-        BR.setPower(power);
-        //////////
-        while(FL.getCurrentPosition() < 2000){
-            telemetry.addData("Status","MotorEncoder FrontLeft: " + FL.getCurrentPosition());
-            telemetry.addData("Status",lightSensor.getVoltage());
-            telemetry.update();
-            if(lightSensor.getVoltage()<low)low = lightSensor.getVoltage();
-            if(lightSensor.getVoltage()>high)high = lightSensor.getVoltage();
-        }
-        //////////
-        FL.setPower(0);
-        FR.setPower(0);
-        BL.setPower(0);
-        BR.setPower(0);
-        //////////
+        powerAll(.25);
+        while(FR.getCurrentPosition() < target){}
+        powerAll(0);
         FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        sleep(100);
-
     }
 
-    public boolean isWhite(){
-        return lightSensor.getVoltage() < threshold;
+
+    public void powerAll(double power){
+        FL.setPower(power);
+        FR.setPower(power);
+        BL.setPower(power);
+        BR.setPower(power);
     }
 }

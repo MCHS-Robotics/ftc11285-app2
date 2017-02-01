@@ -87,13 +87,13 @@ public class BlueClose extends LinearOpMode {
         telemetry.update();
         //forwardWithEncoder(12);
         ///////////////////////////////////////////////////////////////////////////////////////////
-        backwardWithEncoder(39);
+        backwardWithEncoder(20);
         turnRight2(90);
         backwardWithEncoder(18);
-        turnLeft2(90);
+        /*turnLeft2(90);
         backwardWithEncoder(12);
         turnRight2(90);
-        backwardWithEncoder(12);
+        backwardWithEncoder(12);*/
 
 
 
@@ -440,7 +440,7 @@ public class BlueClose extends LinearOpMode {
         BL.setPower(-.25);
         BR.setPower(-.25);
         //////////
-        while(FL.getCurrentPosition() < target){
+        while(FL.getCurrentPosition() > target){
             telemetry.addData("Status","MotorEncoder FrontLeft: " + FL.getCurrentPosition());
             telemetry.update();
         }
