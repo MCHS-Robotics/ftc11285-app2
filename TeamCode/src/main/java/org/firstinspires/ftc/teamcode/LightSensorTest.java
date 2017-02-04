@@ -60,6 +60,11 @@ public class LightSensorTest extends LinearOpMode {
     public AnalogInput lightSensor;
     double low;
     double high;
+    ////////////////////////////////////////////
+    int numInAvg = 6;
+    double[] valueArray;
+    int current = 0;
+    ////////////////////////////////////////////
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -76,6 +81,10 @@ public class LightSensorTest extends LinearOpMode {
         BL.setDirection(DcMotor.Direction.REVERSE);
         low = 10;
         high = 0;
+        valueArray = new double[numInAvg];
+        for(int i = 0; i < numInAvg;i++){
+            valueArray[i] = 4;
+        }
         //lightSensorWorker.calibrate();
 
         idle();
@@ -108,12 +117,8 @@ public class LightSensorTest extends LinearOpMode {
         BL.setPower(power);
         BR.setPower(power);
         //////////
-        while(FL.getCurrentPosition() < 2000){
-            telemetry.addData("Status","MotorEncoder FrontLeft: " + FL.getCurrentPosition());
-            telemetry.addData("Status",lightSensor.getVoltage());
-            telemetry.update();
-            if(lightSensor.getVoltage()<low)low = lightSensor.getVoltage();
-            if(lightSensor.getVoltage()>high)high = lightSensor.getVoltage();
+        while(!isWhite()){
+
         }
         //////////
         FL.setPower(0);
@@ -129,7 +134,24 @@ public class LightSensorTest extends LinearOpMode {
 
     }
 
+    public void addToArray(double val){
+        valueArray[current] = val;
+        current++;
+        if(current == numInAvg){
+            current = 0;
+        }
+    }
+
+    public double average(){
+        double total = 0;
+            for(int i = 0; i < numInAvg ; i++){
+                total+=valueArray[i];
+            }
+            return total/(numInAvg);
+    }
+
     public boolean isWhite(){
-        return lightSensor.getVoltage() < threshold;
+        addToArray(lightSensor.getVoltage());
+        return average() < threshold;
     }
 }

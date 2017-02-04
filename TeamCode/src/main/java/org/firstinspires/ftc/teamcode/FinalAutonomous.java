@@ -53,9 +53,12 @@ public class FinalAutonomous extends LinearOpMode {
     //private ElapsedTime runtime = new ElapsedTime();
 
 
-    DcMotor FL, FR, BL, BR;
+    DcMotor FL, FR, BL, BR,launcher,scoop;
     public double threshold = 3.5;
     public AnalogInput lightSensor;
+    int numInAvg = 6;
+    double[] valueArray;
+    int current = 0;
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -70,6 +73,8 @@ public class FinalAutonomous extends LinearOpMode {
         BR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
+        launcher = hardwareMap.dcMotor.get("launch");
+        launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //lightSensorWorker.calibrate();
 
         idle();
@@ -123,8 +128,25 @@ public class FinalAutonomous extends LinearOpMode {
         }
     }
 
+    public void addToArray(double val){
+        valueArray[current] = val;
+        current++;
+        if(current == numInAvg){
+            current = 0;
+        }
+    }
+
+    public double average(){
+        double total = 0;
+        for(int i = 0; i < numInAvg ; i++){
+            total+=valueArray[i];
+        }
+        return total/(numInAvg);
+    }
+
     public boolean isWhite(){
-        return lightSensor.getVoltage() < threshold;
+        addToArray(lightSensor.getVoltage());
+        return average() < threshold;
     }
 
 
