@@ -88,9 +88,10 @@ public class FinalAutonomous extends LinearOpMode {
         telemetry.addData("Status", "Running");
         telemetry.update();
       ////////////////////////////////////////////////////////////////
-        backwards(15);
-        turnLeft(90+32);
-        moveTillWhite(.15);
+        forward(15);
+        turnLeft(90);
+        diagonal(40);
+        moveTillWhite(-.15);
 
 
         telemetry.addData("Status", "Complete");
@@ -255,6 +256,20 @@ public class FinalAutonomous extends LinearOpMode {
         FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+    public void diagonal(double inches){
+        double target = 560 * inches / (4 * Math.PI * Math.sqrt(2));
+        //FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        powerAll(.25);
+        while(FR.getCurrentPosition() < target){}
+        powerAll(0);
+        //FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
 }
