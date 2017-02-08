@@ -94,46 +94,43 @@ public class Control1TeleOp extends LinearOpMode {
             x = gamepad1.left_stick_x;
             y = -gamepad1.left_stick_y;
 
-            /*MOVEMENT*/
-            if(gamepad1.b){
-                if(speed == 1){
-                    speed = .5;
-                }
-                else{
-                    speed = 1;
-                }
-            }
-
-            if(gamepad1.dpad_up && speed < 1){
-                speed += .001;
-            }
-
-            if(gamepad1.dpad_down && speed > 0){
-                speed -= .001;
-            }
-
+            /*Movement*/
+            x = gamepad1.left_stick_x;
+            y = -gamepad1.left_stick_y;
             x2 = gamepad1.right_stick_x;
-
-            FR.setPower((y-x)*.5 * speed - x2/2 * speed);
-            BL.setPower((y-x)*.5 * speed + x2/2 * speed);
-            FL.setPower((y+x)*.5 * speed + x2/2 * speed);
-            BR.setPower((y+x)*.5 * speed - x2/2 * speed);
-
-            /*ARMS*/
-            if (gamepad1.left_bumper && servoTime <=0) {
-                servoTime = 2000;
-               Switch(servoL);
-            }
-
-            if (gamepad1.right_bumper && servoTime <=0) {
-               Switch(servoR);
-                servoTime = 2000;
-            }
-
-            if(servoTime > 0) {
-                servoTime--;
-            }
-
+            FR.setPower(((y - x) - x2) * speed  + ((gamepad1.dpad_up)?speed:(gamepad1.dpad_down)?-speed:(gamepad1.dpad_left)?speed:(gamepad1.dpad_right)?-speed:0));
+            BL.setPower(((y - x) + x2) * speed  + ((gamepad1.dpad_up)?speed:(gamepad1.dpad_down)?-speed:(gamepad1.dpad_left)?speed:(gamepad1.dpad_right)?-speed:0));
+            FL.setPower(((y + x) + x2) * speed  + ((gamepad1.dpad_up)?speed:(gamepad1.dpad_down)?-speed:(gamepad1.dpad_left)?-speed:(gamepad1.dpad_right)?speed:0));
+            BR.setPower(((y + x) - x2) * speed  + ((gamepad1.dpad_up)?speed:(gamepad1.dpad_down)?-speed:(gamepad1.dpad_left)?-speed:(gamepad1.dpad_right)?speed:0));
+        /*Speed
+//            if(gamepad1.left_bumper/* <- can be changed to any button*/
+//                speed*=speedModifier;
+//                modified = false;
+//                modState = true;
+//            }
+//            if(gamepad1.left_bumper/* <- can be changed to any button*/ && !modified && !modState){
+//                speed*=1/speedModifier;
+//                modified = true;
+//                modState = true;
+//            }
+//            if(!gamepad1.left_bumper && modState){
+//                modState = false;
+//            }
+//            /*ARMS*/
+//            if (gamepad1.left_bumper && servoTime <=0) {
+//                servoTime = 2000;
+//               Switch(servoL);
+//            }
+//
+//            if (gamepad1.right_bumper && servoTime <=0) {
+//               Switch(servoR);
+//                servoTime = 2000;
+//            }
+//
+//            if(servoTime > 0) {
+//                servoTime--;
+//            }
+             /*/
             /*SCOOP*/
             if(gamepad1.left_trigger > .3){
                 scoop.setPower(.3);

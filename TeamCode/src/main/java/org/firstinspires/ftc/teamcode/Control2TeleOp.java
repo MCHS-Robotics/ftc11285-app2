@@ -61,13 +61,13 @@ public class Control2TeleOp extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     DcMotor FR, FL, BL, BR, scoop, launcher;
     double x, y, x2;
-    //Servo servoR,servoL;
-    double servoPos = 0.5;
-    int servoTime = 0;
-    double speed = .5;
     boolean lbState = false;
     boolean launchState = false;
-    boolean polar = false;
+    double speed = .5;//Speed < 1;
+    final double speedModifier = .5;//speedModifier is what speed is multipied by to change it
+    boolean modified = false;// allows for switching between upper and lower speeds
+    boolean modState = false;// solves debouncing
+    int scoopMve = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -104,116 +104,51 @@ public class Control2TeleOp extends LinearOpMode {
             //Sets double x2 to the x value of controller
             x2 = gamepad1.right_stick_x;
 
-            /*MOVEMENT*/
-
-            //Changes the movement speed of the robot when left bumper of gamepad 1 is pressed
-            if (gamepad1.left_bumper && !lbState) {
-                lbState = true;
-                if (speed == .5) {
-                    speed = .25;
-                } else {
-                    speed = .5;
-                }
+           /*Movement*/
+            x = gamepad1.left_stick_x;
+            y = -gamepad1.left_stick_y;
+            x2 = gamepad1.right_stick_x;
+            FR.setPower(((y - x) - x2) * speed  + ((gamepad1.dpad_up)?speed:(gamepad1.dpad_down)?-speed:(gamepad1.dpad_left)?speed:(gamepad1.dpad_right)?-speed:0));
+            BL.setPower(((y - x) + x2) * speed  + ((gamepad1.dpad_up)?speed:(gamepad1.dpad_down)?-speed:(gamepad1.dpad_left)?speed:(gamepad1.dpad_right)?-speed:0));
+            FL.setPower(((y + x) + x2) * speed  + ((gamepad1.dpad_up)?speed:(gamepad1.dpad_down)?-speed:(gamepad1.dpad_left)?-speed:(gamepad1.dpad_right)?speed:0));
+            BR.setPower(((y + x) - x2) * speed  + ((gamepad1.dpad_up)?speed:(gamepad1.dpad_down)?-speed:(gamepad1.dpad_left)?-speed:(gamepad1.dpad_right)?speed:0));
+        /*Speed*/
+            if(gamepad1.left_bumper/* <- can be changed to any button*/ && modified && !modState){
+                speed*=speedModifier;
+                modified = false;
+                modState = true;
             }
-            if (!gamepad1.left_bumper && lbState) {
-                lbState = false;
+            if(gamepad1.left_bumper/* <- can be changed to any button*/ && !modified && !modState){
+                speed*=1/speedModifier;
+                modified = true;
+                modState = true;
             }
-
-
-//moves robot based on the left joystick of gamepad 1
-            if (!polar) {
-                FR.setPower(((y - x) * .5 - x2 / 2) * speed);
-                BL.setPower(((y - x) * .5 + x2 / 2) * speed);
-                FL.setPower(((y + x) * .5 + x2 / 2) * speed);
-                BR.setPower(((y + x) * .5 - x2 / 2) * speed);
-            }
-
-            if (gamepad2.a) polar = true;
-            if (gamepad2.b) polar = false;
-
-            if (polar) {
-                if (gamepad1.dpad_up) {//moves robot up if dpad up is pressed
-                    FR.setPower(speed * .6 - x2 / 4);
-                    FL.setPower(speed * .6 + x2 / 4);
-                    BR.setPower(speed * .6 - x2 / 4);
-                    BL.setPower(speed * .6 + x2 / 4);
-                } else if (gamepad1.dpad_down) {//moves robot down if dpad down is pressed
-                    FR.setPower(-speed * .6 - x2 / 4);
-                    FL.setPower(-speed * .6 + x2 / 4);
-                    BR.setPower(-speed * .6 - x2 / 4);
-                    BL.setPower(-speed * .6 + x2 / 4);
-                } else if (gamepad1.dpad_right) {//moves robot left if dpad left is pressed
-                    FR.setPower(-speed * .6 - x2 / 4);
-                    FL.setPower(speed * .6 + x2 / 4);
-                    BR.setPower(speed * .6 - x2 / 4);
-                    BL.setPower(-speed * .6 + x2 / 4);
-                } else if (gamepad1.dpad_left) {//moves robot right if dpad right is pressed
-                    FR.setPower(speed * .6 - x2 / 4);
-                    FL.setPower(-speed * .6 + x2 / 4);
-                    BR.setPower(-speed * .6 - x2 / 4);
-                    BL.setPower(speed * .6 + x2 / 4);
-                } else {
-
-                    FR.setPower(0 - x2 / 4);
-                    FL.setPower(0 + x2 / 4);
-                    BR.setPower(0 - x2 / 4);
-                    BL.setPower(0 + x2 / 4);
-                }
-
+            if(!gamepad1.left_bumper && modState){
+                modState = false;
             }
 
-
-            /*ARMS*//*
-            if (gamepad2.left_bumper && servoTime <=0) {
-                servoTime = 2000;
-               SwitchSpecial(servoL,0,.2);
-            }
-
-            if (gamepad2.right_bumper && servoTime <=0) {
-               SwitchSpecial(servoR,0,.16);
-                servoTime = 2000;
-            }
-
-            if (gamepad1.left_trigger > .1 && servoTime <=0) {
-                servoTime = 2000;
-                SwitchSpecial(servoL,0,.2);
-            }
-
-            if (gamepad1.right_trigger > .1 && servoTime <=0) {
-                SwitchSpecial(servoR,0,.16);
-                servoTime = 2000;
-            }
-
-            if(servoTime > 0) {
-                servoTime--;
-            }
-*/
             /*SCOOP*/
-            if (gamepad2.left_trigger > .3) {
-                scoop.setPower(.2);
-
-            }
-
-            if (gamepad2.right_trigger > .3) {
-                scoop.setPower(-.2);
-
-            }
-
-
-            if (gamepad1.right_bumper) {
-                scoop.setPower(-.2);
-
-            }
 
             if (gamepad1.y) {
-                scoop.setPower(.2);
-
+              if(scoopMve == 0 || scoopMve == -1)
+                scoopMve = 1;
+              else scoopMve = 0;
             }
-
-            if (gamepad2.right_trigger <= .3 && gamepad1.left_trigger <= .3 && !gamepad1.right_bumper && !gamepad1.y) {
+            if(gamepad1.right_bumper){
+                if(scoopMve == 0 || scoopMve == 1)
+                    scoopMve = -1;
+                else scoopMve = 0;
+            }
+            if(scoopMve == 0){
                 scoop.setPower(0);
-
             }
+            if(scoopMve == 1){
+                scoop.setPower(.5);
+            }
+            if(scoopMve == -1){
+                scoop.setPower(-.5);
+            }
+
 
             /*Launcher*/
             if (gamepad1.a && !launchState) {
