@@ -35,7 +35,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 //import com.qualcomm.robotcore.hardware.GyroSensor;
@@ -56,9 +58,12 @@ public class FinalAutonomous extends LinearOpMode {
     DcMotor FL, FR, BL, BR,launcher,scoop;
     public double threshold = 3.5;
     public AnalogInput lightSensor;
+    static ColorSensor sensorRGB;
+    static DeviceInterfaceModule cdim;
     int numInAvg = 6;
     double[] valueArray;
     int current = 0;
+    static final int LED_CHANNEL = 5;
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -75,6 +80,7 @@ public class FinalAutonomous extends LinearOpMode {
         BL.setDirection(DcMotor.Direction.REVERSE);
         launcher = hardwareMap.dcMotor.get("launch");
         launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        scoop = hardwareMap.dcMotor.get("scoop");
         //lightSensorWorker.calibrate();
 
         idle();
@@ -87,13 +93,18 @@ public class FinalAutonomous extends LinearOpMode {
 
         telemetry.addData("Status", "Running");
         telemetry.update();
-      ////////////////////////////////////////////////////////////////
+        sleep(2000);
+        moveLauncher(2, .8);
+        moveScoop(3,.37);
+        moveLauncher(2,.8);
+        sleep(1000);
         forward(15);
-        turnLeft(90);
-        diagonal(40);
+        turnRight(45);
+        forward(40);
+        turnRight(45);
         moveTillWhite(-.15);
-
-
+        turnRight(180);
+        hitBlue();
         telemetry.addData("Status", "Complete");
         telemetry.update();
     }
@@ -150,6 +161,37 @@ public class FinalAutonomous extends LinearOpMode {
         return average() < threshold;
     }
 
+    public void hitBlue(){
+        if(isRed()){
+
+            try {
+
+                forward(30);
+                Thread.sleep(100);
+            }catch (Exception e){}
+        }else {
+
+            try {
+                right(10);
+                forward(30);
+                Thread.sleep(100);
+            } catch (Exception e) {}
+
+        }
+    }
+
+    public boolean isRed(){
+        //soundPlayer.play(hardwareMap.appContext,0);
+        cdim.setDigitalChannelState(LED_CHANNEL, true);
+        try {
+            Thread.sleep(100);
+        }catch(Exception e){
+
+        }
+        boolean isR = sensorRGB.red()>sensorRGB.blue();
+        cdim.setDigitalChannelState(LED_CHANNEL, false);
+        return isR;
+    }
 
     public void forward(double inches){
         double target = 560 * inches / (4 * Math.PI * Math.sqrt(2));
@@ -160,6 +202,36 @@ public class FinalAutonomous extends LinearOpMode {
         powerAll(.25);
         while(FR.getCurrentPosition() < target){}
         powerAll(0);
+        FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+    public void left(double inches){
+        double target = 560 * inches / (4 * Math.PI * Math.sqrt(2));
+        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FL.setPower(-.25);
+        FR.setPower(.25);
+        BL.setPower(.25);
+        BR.setPower(-.25);
+        FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+    public void right(double inches){
+        double target = 560 * inches / (4 * Math.PI * Math.sqrt(2));
+        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FL.setPower(.25);
+        FR.setPower(-.25);
+        BL.setPower(-.25);
+        BR.setPower(.25);
         FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -270,6 +342,25 @@ public class FinalAutonomous extends LinearOpMode {
         FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+    public void moveLauncher(double turns, double speed) {
+        launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        launcher.setTargetPosition((int) (turns * 1680)*3);
+        launcher.setPower(speed);
+        while (launcher.isBusy()) {
+            telemetry.addData("Status", "" + launcher.getCurrentPosition());
+            telemetry.update();
+        }
+        launcher.setPower(0);
+        launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void moveScoop(double seconds, double power){
+        scoop.setPower(power);
+        sleep((int)(seconds*1000));
+        scoop.setPower(0);
+
     }
 
 }

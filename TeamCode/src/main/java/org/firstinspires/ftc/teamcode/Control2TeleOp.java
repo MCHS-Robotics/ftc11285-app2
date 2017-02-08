@@ -190,23 +190,23 @@ public class Control2TeleOp extends LinearOpMode {
 */
             /*SCOOP*/
             if (gamepad2.left_trigger > .3) {
-                scoop.setPower(.4);
+                scoop.setPower(.2);
 
             }
 
             if (gamepad2.right_trigger > .3) {
-                scoop.setPower(-.4);
+                scoop.setPower(-.2);
 
             }
 
 
             if (gamepad1.right_bumper) {
-                scoop.setPower(-.4);
+                scoop.setPower(-.2);
 
             }
 
             if (gamepad1.y) {
-                scoop.setPower(.4);
+                scoop.setPower(.2);
 
             }
 
@@ -218,7 +218,7 @@ public class Control2TeleOp extends LinearOpMode {
             /*Launcher*/
             if (gamepad1.a && !launchState) {
                 lbState = true;
-                moveLauncher(1, -.8);
+                moveLauncher(2, .8);
             }
             if (!gamepad1.a && launchState) {
                 launchState = false;
@@ -232,7 +232,7 @@ public class Control2TeleOp extends LinearOpMode {
     public void moveLauncher(double turns, double speed) {
         launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        launcher.setTargetPosition(-(int) (turns * 1680));
+        launcher.setTargetPosition((int) (turns * 1680));
         launcher.setPower(speed);
         while (launcher.isBusy()) {
             telemetry.addData("Status", "" + launcher.getCurrentPosition());

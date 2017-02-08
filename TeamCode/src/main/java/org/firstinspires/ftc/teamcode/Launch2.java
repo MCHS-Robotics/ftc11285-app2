@@ -98,9 +98,9 @@ public class Launch2 extends LinearOpMode {
         ///////////////////////////////////////////////////////////////////////////////////////////
 
         sleep(2000);
-        moveLauncher(1, -.8);
-        moveScoop(1.5,-.3);
-        moveLauncher(1,-.8);
+        moveLauncher(2, .8);
+        moveScoop(3,.37);
+        moveLauncher(2,.8);
 
         ///////////////////////////////////////////////////////////////////////////////////////
         /*
@@ -416,9 +416,9 @@ public class Launch2 extends LinearOpMode {
     public void moveLauncher(double turns, double speed) {
         launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        launcher.setTargetPosition(-(int) (turns * 1680));
+        launcher.setTargetPosition((int) ((turns * 1680)));
         launcher.setPower(speed);
-        while (launcher.isBusy()) {
+        while (launcher.isBusy() && opModeIsActive()) {
             telemetry.addData("Status", "" + launcher.getCurrentPosition());
             telemetry.update();
         }
