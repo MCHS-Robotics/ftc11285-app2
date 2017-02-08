@@ -93,11 +93,11 @@ public class FinalAutonomous extends LinearOpMode {
 
         telemetry.addData("Status", "Running");
         telemetry.update();
-        sleep(2000);
+        /*sleep(2000);
         moveLauncher(2, .8);
         moveScoop(3,.37);
         moveLauncher(2,.8);
-        sleep(1000);
+        sleep(1000);*/
         forward(15);
         turnRight(45);
         forward(40);
