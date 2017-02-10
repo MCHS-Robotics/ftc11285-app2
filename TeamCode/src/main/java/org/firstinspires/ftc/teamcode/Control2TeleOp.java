@@ -65,7 +65,7 @@ public class Control2TeleOp extends LinearOpMode {
     boolean launchState = false;
     double speed = .5;//Speed < 1;
     final double speedModifier = .5;//speedModifier is what speed is multipied by to change it
-    boolean modified = false;// allows for switching between upper and lower speeds
+    boolean modified = true;// allows for switching between upper and lower speeds
     boolean modState = false;// solves debouncing
     int scoopMve = 0;
 
@@ -143,10 +143,10 @@ public class Control2TeleOp extends LinearOpMode {
                 scoop.setPower(0);
             }
             if(scoopMve == 1){
-                scoop.setPower(.5);
+                scoop.setPower(.7);
             }
             if(scoopMve == -1){
-                scoop.setPower(-.5);
+                scoop.setPower(-.7);
             }
 
 

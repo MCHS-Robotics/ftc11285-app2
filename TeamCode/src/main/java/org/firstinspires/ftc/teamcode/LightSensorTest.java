@@ -64,6 +64,7 @@ public class LightSensorTest extends LinearOpMode {
     int numInAvg = 6;
     double[] valueArray;
     int current = 0;
+
     ////////////////////////////////////////////
     @Override
     public void runOpMode() throws InterruptedException {
@@ -117,8 +118,12 @@ public class LightSensorTest extends LinearOpMode {
         BL.setPower(power);
         BR.setPower(power);
         //////////
-        while(!isWhite()){
-
+        int i =0;
+        while(i < 1000){
+            addToArray(lightSensor.getVoltage());
+            if(average() > high)high = average();
+            if(average() < low)low = average();
+            i++;
         }
         //////////
         FL.setPower(0);

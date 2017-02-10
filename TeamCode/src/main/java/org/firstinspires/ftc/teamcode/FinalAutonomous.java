@@ -66,8 +66,11 @@ public class FinalAutonomous extends LinearOpMode {
     static final int LED_CHANNEL = 5;
     @Override
     public void runOpMode() throws InterruptedException {
-
-        lightSensor = hardwareMap.analogInput.get("nP");
+        valueArray = new double[numInAvg];
+        for(int i = 0; i < numInAvg;i++){
+            valueArray[i] = 4;
+        }
+        lightSensor = hardwareMap.analogInput.get("lS");
         FL = hardwareMap.dcMotor.get("fl");
         FR = hardwareMap.dcMotor.get("fr");
         BL = hardwareMap.dcMotor.get("bl");
@@ -99,12 +102,11 @@ public class FinalAutonomous extends LinearOpMode {
         moveLauncher(2,.8);
         sleep(1000);*/
         forward(15);
-        turnRight(45);
-        forward(40);
-        turnRight(45);
+        turnLeft(135);
+        backwards(40);
+        turnLeft(45);
         moveTillWhite(-.15);
         turnRight(180);
-        hitBlue();
         telemetry.addData("Status", "Complete");
         telemetry.update();
     }
@@ -362,5 +364,6 @@ public class FinalAutonomous extends LinearOpMode {
         scoop.setPower(0);
 
     }
+
 
 }
