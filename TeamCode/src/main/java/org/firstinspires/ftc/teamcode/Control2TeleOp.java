@@ -63,6 +63,7 @@ public class Control2TeleOp extends LinearOpMode {
     double x, y, x2;
     boolean lbState = false;
     boolean launchState = false;
+    boolean scoopState;
     double speed = .5;//Speed < 1;
     final double speedModifier = .5;//speedModifier is what speed is multipied by to change it
     boolean modified = true;// allows for switching between upper and lower speeds
@@ -129,15 +130,20 @@ public class Control2TeleOp extends LinearOpMode {
 
             /*SCOOP*/
 
-            if (gamepad1.y) {
+            if (gamepad1.y && !scoopState) {
+                scoopState = true;
               if(scoopMve == 0 || scoopMve == -1)
                 scoopMve = 1;
               else scoopMve = 0;
             }
-            if(gamepad1.right_bumper){
+            if(gamepad1.right_bumper && !scoopState){
+                scoopState = true;
                 if(scoopMve == 0 || scoopMve == 1)
                     scoopMve = -1;
                 else scoopMve = 0;
+            }
+            if(!gamepad1.y && !gamepad1.right_bumper && scoopState){
+                scoopState = false;
             }
             if(scoopMve == 0){
                 scoop.setPower(0);
