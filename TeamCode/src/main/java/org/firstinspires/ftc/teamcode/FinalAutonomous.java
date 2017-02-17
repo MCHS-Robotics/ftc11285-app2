@@ -49,7 +49,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannelController;
  * Spins each motor starting with the FL and going clockwise.
  */
 
-@Autonomous(name = "Final Autonomous", group = "Commands")
+@Autonomous(name = "Launch 1 Beacon", group = "Commands")
 //@Disabled
 public class FinalAutonomous extends LinearOpMode {
 
@@ -115,12 +115,13 @@ public class FinalAutonomous extends LinearOpMode {
         moveTillWhite(-.15);
         turnRight(45);
         */
+        moveLauncher(2, .8);
         forward(7);
         counterClockWise(80);
         diagonalTilWhite(.15);
         sleep(100);
-        backwards(8);
-        forward(3);
+        backwards(10);
+        forward(2);
         hitBlue();
         telemetry.addData("Status", "Complete");
         telemetry.update();
@@ -186,15 +187,17 @@ public class FinalAutonomous extends LinearOpMode {
         if (isRed()) {
 
             try {
-                forward(3);
-                sleep(3000);
-                backwards(7);
+
                 Thread.sleep(100);
             } catch (Exception e) {
             }
         } else {
 
             try {
+                forward(3);
+                sleep(3000);
+                backwards(9);
+                forward(5);
                 Thread.sleep(100);
             } catch (Exception e) {
             }
@@ -378,18 +381,6 @@ public class FinalAutonomous extends LinearOpMode {
         //BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void moveLauncher(double turns, double speed) {
-        launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        launcher.setTargetPosition((int) (turns * 1680) * 3);
-        launcher.setPower(speed);
-        while (launcher.isBusy()) {
-            telemetry.addData("Status", "" + launcher.getCurrentPosition());
-            telemetry.update();
-        }
-        launcher.setPower(0);
-        launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    }
 
     public void moveScoop(double seconds, double power) {
         scoop.setPower(power);
@@ -445,5 +436,17 @@ public class FinalAutonomous extends LinearOpMode {
             } catch (Exception e) {
             }
         }
+    }
+    public void moveLauncher(double turns, double speed) {
+        launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        launcher.setTargetPosition((int) (turns * 1680));
+        launcher.setPower(speed);
+        while (launcher.isBusy() && opModeIsActive()) {
+            telemetry.addData("Status", "" + launcher.getCurrentPosition());
+            telemetry.update();
+        }
+        launcher.setPower(0);
+        launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }
