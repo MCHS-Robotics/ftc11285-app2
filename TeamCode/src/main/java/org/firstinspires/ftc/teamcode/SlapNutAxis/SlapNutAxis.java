@@ -30,13 +30,11 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.SlapNutAxis;
 
-import com.qualcomm.hardware.adafruit.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -53,59 +51,39 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name = "Tele1", group = "Linear Opmode")  // @Autonomous(...) is the other common choice
-// @Disabled
-public class Control2TeleOp extends LinearOpMode {
+@TeleOp(name = "xOmni Template please refactor", group = "templates")  // @Autonomous(...) is the other common choice
+ //@Disabled
+public class SlapNutAxis extends LinearOpMode {
 
     /* Declare OpMode members. */
+    //time
     private ElapsedTime runtime = new ElapsedTime();
-    DcMotor FR, FL, BL, BR, scoop, launcher;
+    //movement
+    DcMotor FR, FL, BL, BR;
     double x, y, x2;
-    boolean lbState = false;
-    boolean launchState = false;
-    boolean scoopState;
+    //speed
     double speed = .5;//Speed < 1;
     final double speedModifier = .5;//speedModifier is what speed is multipied by to change it
-    boolean modified = true;// allows for switching between upper and lower speeds
+    boolean modified = false;// allows for switching between upper and lower speeds
     boolean modState = false;// solves debouncing
-    int scoopMve = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        /*Initialize motors*/
+        // Initialize motors & do pre game setup
         FR = hardwareMap.dcMotor.get("fr");
         FL = hardwareMap.dcMotor.get("fl");
         BL = hardwareMap.dcMotor.get("bl");
         BR = hardwareMap.dcMotor.get("br");
-        scoop = hardwareMap.dcMotor.get("scoop");
-        //servoR = hardwareMap.servo.get("servoR");
-        //servoL = hardwareMap.servo.get("servoL");
-        launcher = hardwareMap.dcMotor.get("launch");
-        launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //moveLauncher(.5,.8);
-        /*Do pregame setup*/
-        //servoR.setPosition(Servo.MIN_POSITION);
-        //servoL.setPosition(Servo.MIN_POSITION);
-
-        //FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
         FL.setDirection(DcMotor.Direction.REVERSE);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-
-            //Sets doubles x and y to controller 1's left stick x and y values
-            x = gamepad1.left_stick_x;
-            y = -gamepad1.left_stick_y;
-            //Sets double x2 to the x value of controller
-            x2 = gamepad1.right_stick_x;
-
-           /*Movement*/
+        while (opModeIsActive()){
+        /*Movement*/
             x = gamepad1.left_stick_x;
             y = -gamepad1.left_stick_y;
             x2 = gamepad1.right_stick_x;
@@ -127,59 +105,9 @@ public class Control2TeleOp extends LinearOpMode {
             if(!gamepad1.left_bumper && modState){
                 modState = false;
             }
-
-            /*SCOOP*/
-
-            if (gamepad1.y && !scoopState) {
-                scoopState = true;
-              if(scoopMve == 0 || scoopMve == -1)
-                scoopMve = 1;
-              else scoopMve = 0;
-            }
-            if(gamepad1.right_bumper && !scoopState){
-                scoopState = true;
-                if(scoopMve == 0 || scoopMve == 1)
-                    scoopMve = -1;
-                else scoopMve = 0;
-            }
-            if(!gamepad1.y && !gamepad1.right_bumper && scoopState){  
-                scoopState = false;
-            }
-            if(scoopMve == 0){
-                scoop.setPower(0);
-            }
-            if(scoopMve == 1){
-                scoop.setPower(.7);
-            }
-            if(scoopMve == -1){
-                scoop.setPower(-.7);
-            }
-
-
-            /*Launcher*/
-            if (gamepad1.a && !launchState) {
-                lbState = true;
-                moveLauncher(2, .8);
-            }
-            if (!gamepad1.a && launchState) {
-                launchState = false;
-            }
-
-
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }
     }
-
-    public void moveLauncher(double turns, double speed) {
-        launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        launcher.setTargetPosition((int) (turns * 1680));
-        launcher.setPower(speed);
-        while (launcher.isBusy()) {
-            telemetry.addData("Status", "" + launcher.getCurrentPosition());
-            telemetry.update();
-        }
-        launcher.setPower(0);
-        launcher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    }
 }
+
+

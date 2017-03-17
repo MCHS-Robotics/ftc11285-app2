@@ -39,6 +39,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.DigitalChannelController;
+import java.util.*;
 
 //import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 //import com.qualcomm.robotcore.hardware.GyroSensor;
@@ -176,6 +177,74 @@ public class FinalAutonomous extends LinearOpMode {
             total += valueArray[i];
         }
         return total / (numInAvg);
+    }
+
+    public double[] mode()
+    {
+        //List<Double> hayes = new ArrayList<>();
+        double most = 0;
+        double sample = 0;
+        for (int i = 0; i < numInAvg; i++) {
+            int highest;
+            int lowest;
+            int[] positive;
+            int[] negative;
+            for (int i = 0; i < numInAvg; i++) {
+                if (i == 0) {
+                    highest = valueArray[i];
+                    lowest = highest;
+                } else {
+                    if (valueArray[i] > highest) {
+                        highest = valueArray[i];
+                    } else if (valueArray[i] < lowest) {
+                        lowest = valueArray[i];
+                    }
+                }
+            }
+            int lav = lowest * -1;
+            positive = new int[highest];
+            negative = new int[lav];
+            for (int x = 0; x < numInAvg; x++) {
+                int value = valueArray[x];
+                if (value >= 0) {
+                    positive[value]++;
+                } else {
+                    negative[value * -1]++;
+                }
+            }
+            //double highest;
+            //double lowest;
+            double mode;
+            //double nmode;
+            ArrayList<Double> pos = new ArrayList<Double>();
+            ArrayList<Double> neg = new ArrayList<Double>();
+            for (int i = 0; i < positive.length; i++) {
+                if (i == 0) {
+                    mode = positive[i];
+                } else {
+                    if (positive[i] > mode) {
+                        mode = positive[i];
+                    }
+                }
+            }
+            for (int i = 0; i < positive.length; i++) {
+                if (positive[i] == mode) {
+                    pos.add(i);
+                }
+            }
+            for (int i = 0; i < negative.length; i++) {
+                if (negative[i] > mode) {
+                    neg.add(i * -1);
+                } else if (negative[i] == mode) {
+                    pos.add(i * -1);
+                }
+            }
+            if (neg.size() > 0) {
+                return neg;
+            } else {
+                return pos;
+            }
+        }
     }
 
     public boolean isWhite() {
