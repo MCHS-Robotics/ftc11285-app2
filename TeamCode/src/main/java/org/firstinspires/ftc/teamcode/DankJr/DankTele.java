@@ -30,7 +30,7 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.teamcode.Read;
+package org.firstinspires.ftc.teamcode.DankJr;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -87,10 +87,10 @@ public class DankTele extends LinearOpMode {
             x = gamepad1.left_stick_x;
             y = -gamepad1.left_stick_y;
             x2 = gamepad1.right_stick_x;
-            FR.setPower(((y - x) - x2) * speed  + ((gamepad1.dpad_up)?speed:(gamepad1.dpad_down)?-speed:(gamepad1.dpad_left)?speed:(gamepad1.dpad_right)?-speed:0));
-            BL.setPower(((y - x) + x2) * speed  + ((gamepad1.dpad_up)?speed:(gamepad1.dpad_down)?-speed:(gamepad1.dpad_left)?speed:(gamepad1.dpad_right)?-speed:0));
-            FL.setPower(((y + x) + x2) * speed  + ((gamepad1.dpad_up)?speed:(gamepad1.dpad_down)?-speed:(gamepad1.dpad_left)?-speed:(gamepad1.dpad_right)?speed:0));
-            BR.setPower(((y + x) - x2) * speed  + ((gamepad1.dpad_up)?speed:(gamepad1.dpad_down)?-speed:(gamepad1.dpad_left)?-speed:(gamepad1.dpad_right)?speed:0));
+            FR.setPower(y * speed - x2 * speed);
+            BL.setPower(y * speed + x2 * speed);
+            FL.setPower(y * speed + x2 * speed);
+            BR.setPower(y * speed - x2 * speed);
         /*Speed*/
             if(gamepad1.left_bumper/* <- can be changed to any button*/ && modified && !modState){
                 speed*=speedModifier;
